@@ -1,15 +1,24 @@
 import {useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
+import {useEth} from "../contexts/EthContext";
 
 function NavBar() {
     const theme = useTheme();
+    const {state} = useEth();
 
     const containerStyle = {
         display: "flex",
         flexDirection: "row",
-        gap: theme.spacing(8),
-        padding: theme.spacing(4),
+        justifyContent: "space-between",
         backgroundColor: theme.palette.primary.main,
+    }
+
+    const linksContainerStyle = {
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: theme.spacing(8),
+        padding: theme.spacing(2),
     }
 
     const linkStyle = {
@@ -17,10 +26,27 @@ function NavBar() {
         color: theme.palette.primary.contrastText,
     }
 
+    const profileInfoContainerStyle = {
+        display: "flex",
+        flexDirection: "column",
+        paddingHorizontal: theme.spacing(4),
+        justifyContent: "center",
+    }
+
     return (
         <div style={containerStyle}>
-            <Link to="/" style={linkStyle}>Home</Link>
+            <div style={linksContainerStyle}>
+                <Link to="/" style={linkStyle}>Home</Link>
+                <Link to="/" style={linkStyle}>Home</Link>
+                <Link to="/" style={linkStyle}>Home</Link>
+            </div>
+
+            <div style={profileInfoContainerStyle}>
+                <p style={{margin: '0px'}}>Account: {state.accounts[0]}</p>
+                <p style={{margin: '0px'}}>Balance: {state.balance}</p>
+            </div>
         </div>
+
     )
 }
 
