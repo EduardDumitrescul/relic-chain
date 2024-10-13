@@ -9,20 +9,30 @@ function App() {
 
     useEffect(() => {
         if (window.ethereum) {
-            window.ethereum.on('chainChanged', () => {
-                window.location.reload();
-            })
-            window.ethereum.on('connect', () => {
-                window.location.reload();
-            })
-            window.ethereum.on('disconnect', () => {
-                window.location.reload();
-            })
-            window.ethereum.on('accountsChanged', () => {
-                window.location.reload();
-            })
+            const handleConnect = () => {
+                console.log("Connected");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+            };
+            const handleDisconnect = () => {
+                console.log("Disconnected");
+                setTimeout(() => {
+                    window.location.reload();
+                }, 100);
+            };
+
+            // Add event listeners
+            window.ethereum.on('connect', handleConnect);
+            window.ethereum.on('disconnect', handleDisconnect);
+
+            // Cleanup function to remove event listeners
+            return () => {
+                window.ethereum.removeListener('connect', handleConnect);
+                window.ethereum.removeListener('disconnect', handleDisconnect);
+            };
         }
-    });
+    }, []);
 
 
     return (
