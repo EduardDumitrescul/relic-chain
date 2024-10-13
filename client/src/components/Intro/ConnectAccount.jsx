@@ -1,19 +1,41 @@
-import useEth from "../../contexts/EthContext/useEth";
+    import useEth from "../../contexts/EthContext/useEth";
+    import {useTheme} from "@mui/material";
 
-function ConnectAccount() {
-    const {state} = useEth();
+    function ConnectAccount() {
+        const {state} = useEth();
+        const theme = useTheme();
 
-    return (
-        <div>
-            {state.accounts && state.accounts.length > 0 ? (
-                // If accounts are present, show the connected account
-                <p>Connected Account: {state.accounts[0]}</p>
-            ) : (
-                // If no accounts are connected, prompt the user
-                <p>Please Connect Account</p>
-            )}
-        </div>
-    )
-}
+        const containerStyle = {
+            display: "flex",
+            justifyContent: "center", // Center horizontally
+            alignItems: "center", // Center vertically
+            width: "40%",
+            height: "40%",
+            background: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText, // Add contrast for the text inside
+            borderRadius: "10px", // Optional: round the corners
+        };
 
-export default ConnectAccount;
+        const pageStyle = {
+            display: "flex",
+            justifyContent: "center", // Center horizontally
+            alignItems: "center", // Center vertically
+            height: "100vh", // Full viewport height to center vertically
+            width: "100vw",
+            background: theme.palette.primary.light, // Optional: background for the page
+        };
+
+        return (
+            <div id="ConnectAccount" style={pageStyle}>
+                <div className="container" style={containerStyle}>
+                    {state.accounts && state.accounts.length > 0 ? (
+                        <p>Connected Account: {state.accounts[0]}</p>
+                    ) : (
+                        <p>Please Connect Account</p>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    export default ConnectAccount;
