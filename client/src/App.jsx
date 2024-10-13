@@ -2,9 +2,29 @@ import useEth from "./contexts/EthContext/useEth";
 import Intro from "./components/Intro/";
 import {ThemeProvider} from "@mui/material";
 import {Theme} from "./Theme";
+import {useEffect} from "react";
 
 function App() {
     const {state} = useEth();
+
+    useEffect(() => {
+        if (window.ethereum) {
+            window.ethereum.on('chainChanged', () => {
+                window.location.reload();
+            })
+            window.ethereum.on('connect', () => {
+                window.location.reload();
+            })
+            window.ethereum.on('disconnect', () => {
+                window.location.reload();
+            })
+            window.ethereum.on('accountsChanged', () => {
+                window.location.reload();
+            })
+        }
+    });
+
+
     return (
         <ThemeProvider theme={Theme}>
               <div id="App">
