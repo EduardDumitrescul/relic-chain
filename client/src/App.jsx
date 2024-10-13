@@ -1,20 +1,22 @@
-import { EthProvider } from "./contexts/EthContext";
+import useEth from "./contexts/EthContext/useEth";
 import Intro from "./components/Intro/";
 import {ThemeProvider} from "@mui/material";
 import {Theme} from "./Theme";
 
 function App() {
-
+    const {state} = useEth();
     return (
-    <EthProvider>
         <ThemeProvider theme={Theme}>
               <div id="App">
                 <div className="container">
-                  <Intro/>
+                    {state.accounts && state.accounts.length > 0 ? (
+                        <p>Connected Account: {state.accounts[0]}</p>
+                    ) : (
+                        <Intro/>
+                    )}
                 </div>
               </div>
         </ThemeProvider>
-    </EthProvider>
   );
 }
 
