@@ -43,7 +43,7 @@ function NavBar() {
 
             <div style={profileInfoContainerStyle}>
                 <p style={{margin: '0px'}}>Account: {state.accounts[0]}</p>
-                <p style={{margin: '0px'}}>Balance: {state.balance}</p>
+                <p style={{margin: '0px'}}>Balance: {state.web3.utils.fromWei(state.balance, 'ether')} ETH</p>
             </div>
         </div>
 
