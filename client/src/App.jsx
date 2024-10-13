@@ -2,7 +2,9 @@ import useEth from "./contexts/EthContext/useEth";
 import Intro from "./components/Intro/";
 import {ThemeProvider} from "@mui/material";
 import {Theme} from "./Theme";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
+import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
+import NavBar from "./components/NavBar";
 
 function App() {
     const {state} = useEth();
@@ -40,7 +42,12 @@ function App() {
               <div id="App">
                 <div className="container">
                     {state.accounts && state.accounts.length > 0 ? (
-                        <p>Connected Account: {state.accounts[0]}</p>
+                        <BrowserRouter>
+                            <NavBar/>
+                            <Routes>
+                                <Route path="" element={<p>Home</p>} />
+                            </Routes>
+                        </BrowserRouter>
                     ) : (
                         <Intro/>
                     )}
