@@ -6,6 +6,7 @@ const initialState = {
   artifact: null,
   web3: null,
   accounts: null,
+  balance: null,
   networkID: null,
   contract: null
 };

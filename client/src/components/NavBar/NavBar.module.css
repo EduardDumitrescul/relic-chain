@@ -1,0 +1,31 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: var(--primary-main);
+}
+
+.links-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-8);
+    padding: var(--spacing-2);
+}
+
+.link {
+    text-decoration: none;
+    color: var(--primary-contrastText);
+}
+
+.profile-info-container {
+    display: flex;
+    flex-direction: column;
+    padding-left: var(--spacing-4);
+    padding-right: var(--spacing-4);
+    justify-content: center;
+}
+
+.no-margin {
+    margin: 0;
+}
