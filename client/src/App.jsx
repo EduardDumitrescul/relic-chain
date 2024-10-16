@@ -4,7 +4,7 @@ import {ThemeProvider} from "@mui/material";
 import {Theme} from "./Theme";
 import React, {useEffect} from "react";
 import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar";
 
 function App() {
     const {state} = useEth();
