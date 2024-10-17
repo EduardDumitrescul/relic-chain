@@ -33,11 +33,11 @@ contract RelicToken is ERC721, ERC721URIStorage{
         return super.tokenURI(tokenId);
     }
 
-    function getTokenIds(address owner)
+    function getTokenIds()
     public
     view
     returns (uint256[] memory) {
-        return tokens[owner];
+        return tokens[msg.sender];
     }
 
     function supportsInterface(bytes4 interfaceId)

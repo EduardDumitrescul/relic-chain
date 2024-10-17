@@ -56,7 +56,7 @@ contract("RelicToken: getTokenIds", (accounts) => {
     let uri3 = "3";
     let uri4 = "4";
 
-    beforeEach(async () => {
+    before(async () => {
         relicToken = await RelicToken.new();
         await relicToken.createToken(owner1, uri1);
         await relicToken.createToken(owner2, uri2);
@@ -65,7 +65,7 @@ contract("RelicToken: getTokenIds", (accounts) => {
     });
 
     it("gets tokens filtered by owner", async () => {
-        const ids = await relicToken.getTokenIds(owner1);
+        const ids = await relicToken.getTokenIds({from: owner1});
         const expected = [1, 3, 4];
         const actual = ids.map(id => id.toNumber());
         assert.deepEqual(actual, expected);
