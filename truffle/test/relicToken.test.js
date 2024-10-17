@@ -43,29 +43,31 @@ contract("RelicToken: createToken", (accounts) => {
             assert.equal(actual, uri);
         })
     });
-
-
-    describe("when multiple tokens are created", async () => {
-        let owner1 = accounts[1];
-        let owner2 = accounts[2];
-
-        let uri1 = "1";
-        let uri2 = "2";
-        let uri3 = "3";
-        let uri4 = "4";
-
-        beforeEach(async () => {
-            await relicToken.createToken(owner1, uri1);
-            await relicToken.createToken(owner2, uri2);
-            await relicToken.createToken(owner1, uri3);
-            await relicToken.createToken(owner1, uri4);
-        });
-
-        it("gets tokens filtered by owner", async () => {
-            const ids = await relicToken.getTokenIds(owner1);
-            const expected = [1, 3, 4];
-            const actual = ids.map(id => id.toNumber());
-            assert.deepEqual(actual, expected);
-        })
-    })
 });
+
+contract("RelicToken: getTokenIds", (accounts) => {
+    let relicToken;
+
+    let owner1 = accounts[1];
+    let owner2 = accounts[2];
+
+    let uri1 = "1";
+    let uri2 = "2";
+    let uri3 = "3";
+    let uri4 = "4";
+
+    beforeEach(async () => {
+        relicToken = await RelicToken.new();
+        await relicToken.createToken(owner1, uri1);
+        await relicToken.createToken(owner2, uri2);
+        await relicToken.createToken(owner1, uri3);
+        await relicToken.createToken(owner1, uri4);
+    });
+
+    it("gets tokens filtered by owner", async () => {
+        const ids = await relicToken.getTokenIds(owner1);
+        const expected = [1, 3, 4];
+        const actual = ids.map(id => id.toNumber());
+        assert.deepEqual(actual, expected);
+    })
+})
