@@ -1,13 +1,13 @@
 import {Typography, useTheme} from "@mui/material";
 
-function Title(props) {
+function Headline(props) {
     const theme = useTheme();
 
     const textColor = props.color? props.color : theme.palette.primary.contrastText;
 
     return (
-        <Typography variant="h4" color={textColor}>{props.text}</Typography>
+        <Typography variant="h2" color={textColor}>{props.text}</Typography>
     )
 }
 
-export default Title;
+export default Headline;
