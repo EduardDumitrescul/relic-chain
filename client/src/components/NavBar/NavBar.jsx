@@ -4,15 +4,7 @@ import { useEth } from "../../contexts/EthContext";
 import styles from './NavBar.module.css';
 
 function NavBar() {
-    const theme = useTheme();
     const { state } = useEth();
-
-    document.documentElement.style.setProperty('--primary-main', theme.palette.primary.main);
-    document.documentElement.style.setProperty('--primary-contrastText', theme.palette.primary.contrastText);
-    document.documentElement.style.setProperty('--spacing-8', theme.spacing(8));
-    document.documentElement.style.setProperty('--spacing-2', theme.spacing(2));
-    document.documentElement.style.setProperty('--spacing-4', theme.spacing(4));
-
     return (
         <div className={styles.navbar}>
             <div className={styles['links-container']}>
