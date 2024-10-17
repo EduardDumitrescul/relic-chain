@@ -10,17 +10,18 @@ contract("RelicToken: deployment", () => {
 contract("RelicToken: createToken", (accounts) => {
     let relicToken;
     const owner = accounts[1];  // Token owner
+    const uri = "uri";
 
     describe("when a new token is created", async () => {
         let tx;
         beforeEach(async () => {
             relicToken = await RelicToken.new();
-            tx = await relicToken.createToken(owner);
+            tx = await relicToken.createToken(owner, uri);
         });
 
         it("emits the AccountCreated event", async () => {
             const expectedEvent = "TokenCreated";
-            const actualEvent = tx.logs[1].event;
+            const actualEvent = tx.logs[2].event;
             assert.equal(actualEvent, expectedEvent);
         })
 
@@ -33,5 +34,10 @@ contract("RelicToken: createToken", (accounts) => {
             const actual = await relicToken.tokenCount();  // Fetch token count
             assert.equal(actual.toNumber(), 1, "Token count should be 1 after minting");
         });
+
+        it("gets the token uri", async() => {
+            const actual = await relicToken.tokenURI(1);
+            assert.equal(actual, uri);
+        })
     });
 });
