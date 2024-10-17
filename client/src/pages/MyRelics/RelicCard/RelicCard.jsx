@@ -1,7 +1,6 @@
 import {Card, CardContent, CardMedia} from "@mui/material";
-import RelicCardModel from "./RelicCardModel";
-import Title from "../Title";
-import Body from "../Body";
+import Title from "../../../components/Text/Title";
+import Body from "../../../components/Text/Body";
 
 function RelicCard(props) {
     const model = props.model;

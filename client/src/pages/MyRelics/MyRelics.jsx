@@ -1,9 +1,9 @@
 import styles from './MyRelics.module.css';
 import {Grid, Grid2, useTheme} from "@mui/material";
-import Title from "../Title";
-import RelicCardModel from "./RelicCardModel";
-import Headline from "../Headline";
-import RelicCard from "./RelicCard";
+import Title from "../../components/Text/Title";
+import RelicCardModel from "./RelicCard/RelicCardModel";
+import Headline from "../../components/Text/Headline";
+import RelicCard from "./RelicCard/RelicCard";
 
 function MyRelics() {
     const relicCardModels = [
