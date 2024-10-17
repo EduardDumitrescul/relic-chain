@@ -9,6 +9,8 @@ contract RelicToken is ERC721, ERC721URIStorage{
 
     event TokenCreated(uint256 value);
 
+    mapping(address => uint256[]) private tokens;
+
     constructor()
     ERC721("RelicToken", "RTK") {
 
@@ -18,6 +20,7 @@ contract RelicToken is ERC721, ERC721URIStorage{
         tokenCount++;
         uint256 newTokenId = tokenCount;
         _safeMint(owner, newTokenId);
+        tokens[owner].push(newTokenId);
         _setTokenURI(newTokenId, uri);
         emit TokenCreated(newTokenId);
     }
@@ -28,6 +31,13 @@ contract RelicToken is ERC721, ERC721URIStorage{
     override(ERC721, ERC721URIStorage)
     returns (string memory){
         return super.tokenURI(tokenId);
+    }
+
+    function getTokenIds(address owner)
+    public
+    view
+    returns (uint256[] memory) {
+        return tokens[owner];
     }
 
     function supportsInterface(bytes4 interfaceId)
