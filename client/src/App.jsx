@@ -56,16 +56,18 @@ function App() {
     return (
         <ThemeProvider theme={Theme}>
               <div id="App">
-                {state.accounts && state.accounts.length > 0 ? (
-                    <BrowserRouter>
-                        <NavBar/>
-                        <Routes>
-                            <Route path="" element={MyRelics()} />
-                        </Routes>
-                    </BrowserRouter>
-                ) : (
-                    <Intro/>
-                )}
+                    {state.accounts && state.accounts.length > 0 ? (
+                        <BrowserRouter>
+                            <NavBar/>
+                            <div className="centered-page">
+                                <Routes>
+                                    <Route path="" element={MyRelics()} />
+                                </Routes>
+                            </div>
+                        </BrowserRouter>
+                    ) : (
+                        <Intro/>
+                    )}
               </div>
         </ThemeProvider>
   );
