@@ -1,11 +1,11 @@
 import useEth from "./contexts/EthContext/useEth";
-import Intro from "./pages/ConnectAccount/";
+import Intro from "./modules/connectAccount/";
 import {ThemeProvider, useTheme} from "@mui/material";
 import {Theme} from "./Theme";
 import React, {useEffect} from "react";
 import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
-import MyRelics from "./pages/MyRelics/MyRelics";
+import MyRelics from "./modules/inventory/MyRelics";
 import "./styles.css";
 
 function App() {
