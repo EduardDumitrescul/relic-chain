@@ -6,14 +6,19 @@ import Headline from "../../components/Text/Headline";
 import RelicCard from "./RelicCard/RelicCard";
 import InventoryService from "./InventoryService";
 import {useEffect, useState} from "react";
+import TokenRetriever from "./TokenRetriever";
+import {useEth} from "../../contexts/EthContext";
 
 function InventoryPage() {
+    const {state} = useEth();
+    const inventoryService = new InventoryService(state);
     const [cardModels, setCardModels] = useState([]);
 
     useEffect(() => {
         async function fetchCardModels() {
             try {
-                let models = await InventoryService.getRelics();
+                let models = await inventoryService.getRelics();
+                console.log(await (new TokenRetriever(state)).getTokenURIs());
                 setCardModels(models);
             }
             catch (err) {
@@ -24,6 +29,7 @@ function InventoryPage() {
         fetchCardModels()
     }, []);
 
+    console.log('InventoryPage rendered');
     return (
         <>
             <Headline text="Your Relics" />

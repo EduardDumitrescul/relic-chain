@@ -4,11 +4,14 @@ import { CID } from 'multiformats/cid';
 import JsonDataSource from "../storage/JsonDataSource";
 import jsonDataSource from "../storage/JsonDataSource";
 import RelicCardModel from "./RelicCard/RelicCardModel";
+import tokenRetriever from "./TokenRetriever";
 
 class InventoryService {
+    #tokenRetriever = null;
     #jsonDataSource = null;
 
-    constructor() {
+    constructor(eth) {
+        this.#tokenRetriever = new tokenRetriever(eth);
         this.#jsonDataSource = JsonDataSource
     }
 
@@ -33,7 +36,7 @@ class InventoryService {
     }
 
     async getRelics() {
-        let cids = await this.#putTestData()
+        let cids = await this.#tokenRetriever.getTokenURIs();
         let models = []
         for(let cid of cids) {
             models.push(await this.getRelic(cid));
@@ -48,4 +51,4 @@ class InventoryService {
     }
 }
 
-export default new InventoryService();
+export default InventoryService;
