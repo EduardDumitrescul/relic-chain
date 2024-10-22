@@ -62,7 +62,7 @@ function App() {
                             <NavBar/>
                             <div className="centered-page">
                                 <Routes>
-                                    <Route path="" element={InventoryPage()} />
+                                    <Route path="" element={<InventoryPage/>} />
                                 </Routes>
                             </div>
                         </BrowserRouter>

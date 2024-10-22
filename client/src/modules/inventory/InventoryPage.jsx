@@ -5,26 +5,30 @@ import RelicCardModel from "./RelicCard/RelicCardModel";
 import Headline from "../../components/Text/Headline";
 import RelicCard from "./RelicCard/RelicCard";
 import InventoryService from "./InventoryService";
+import {useEffect, useState} from "react";
 
 function InventoryPage() {
-    const relicCardModels = [
-        new RelicCardModel(),
-        new RelicCardModel(),
-        new RelicCardModel(),
-        new RelicCardModel(),
-        new RelicCardModel(),
-        new RelicCardModel(),
-        new RelicCardModel(),
-    ]
+    const [cardModels, setCardModels] = useState([]);
 
-    const inventoryService = InventoryService
-    inventoryService.test()
+    useEffect(() => {
+        async function fetchCardModels() {
+            try {
+                let models = await InventoryService.getRelics();
+                setCardModels(models);
+            }
+            catch (err) {
+                console.log("Error while trying to fetch Card Models");
+                setCardModels([]);
+            }
+        }
+        fetchCardModels()
+    }, []);
 
     return (
         <>
             <Headline text="Your Relics" />
             <Grid2 container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {relicCardModels.map((model, index) => (
+                {cardModels.map((model, index) => (
                     <Grid2 size = {4} item key={index}>
                         <RelicCard model={model} />
                     </Grid2>
