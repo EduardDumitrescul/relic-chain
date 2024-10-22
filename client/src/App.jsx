@@ -5,8 +5,9 @@ import {Theme} from "./Theme";
 import React, {useEffect} from "react";
 import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
-import MyRelics from "./modules/inventory/MyRelics";
+import InventoryPage from "./modules/inventory/InventoryPage";
 import "./styles.css";
+
 
 function App() {
     const {state} = useEth();
@@ -61,7 +62,7 @@ function App() {
                             <NavBar/>
                             <div className="centered-page">
                                 <Routes>
-                                    <Route path="" element={MyRelics()} />
+                                    <Route path="" element={InventoryPage()} />
                                 </Routes>
                             </div>
                         </BrowserRouter>

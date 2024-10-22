@@ -4,8 +4,9 @@ import Title from "../../components/Text/Title";
 import RelicCardModel from "./RelicCard/RelicCardModel";
 import Headline from "../../components/Text/Headline";
 import RelicCard from "./RelicCard/RelicCard";
+import InventoryService from "./InventoryService";
 
-function MyRelics() {
+function InventoryPage() {
     const relicCardModels = [
         new RelicCardModel(),
         new RelicCardModel(),
@@ -15,6 +16,9 @@ function MyRelics() {
         new RelicCardModel(),
         new RelicCardModel(),
     ]
+
+    const inventoryService = InventoryService
+    inventoryService.test()
 
     return (
         <>
@@ -30,4 +34,4 @@ function MyRelics() {
     )
 }
 
-export default MyRelics;
+export default InventoryPage;
