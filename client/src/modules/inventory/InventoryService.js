@@ -36,8 +36,6 @@ class InventoryService {
         let cids = await this.#putTestData()
         let models = []
         for(let cid of cids) {
-            console.log(cid)
-            console.log(cids)
             models.push(await this.getRelic(cid));
         }
         return models;
