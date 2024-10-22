@@ -3,14 +3,17 @@ import {strings} from "@helia/strings";
 import {CID} from "multiformats/cid";
 
 class DataSource {
+    #helia = null;
+    #stringsService = null;
+
     constructor() {
-        this.helia = null;
-        this.stringsService = null;
-        this.initialize();
+        this.#helia = null;
+        this.#stringsService = null;
+        this.#initialize();
     }
 
     // Initialize Helia and Strings service
-    async initialize() {
+    async #initialize() {
         try {
             this.helia = await createHelia();
             this.stringsService = strings(this.helia);

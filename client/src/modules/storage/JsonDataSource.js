@@ -1,20 +1,20 @@
-import {CID} from "multiformats/cid";
 import DataSource from "./DataSource";
 
 class JsonDataSource {
+    #dataSource = null;
+
     constructor() {
-        this.dataSource = DataSource
+        this.#dataSource = DataSource
     }
 
     async storeJson(json) {
         let jsonString = JSON.stringify(json);
-        return this.dataSource.addData(jsonString)
+        return this.#dataSource.addData(jsonString)
     }
 
     async retrieveJson(cidString) {
-        let jsonString = await this.dataSource.getData(cidString)
-        let json = JSON.parse(jsonString);
-        return json;
+        let jsonString = await this.#dataSource.getData(cidString)
+        return JSON.parse(jsonString);
     }
 }
 
