@@ -29,7 +29,7 @@ function InventoryPage() {
             <Headline text="Your Relics" />
             <Grid2 container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {cardModels.map((model, index) => (
-                    <Grid2 size = {4} key={index}>RR
+                    <Grid2 size = {4} key={index}>
                         <RelicCard model={model} />
                     </Grid2>
                 ))}
