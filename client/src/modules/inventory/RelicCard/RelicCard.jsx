@@ -5,7 +5,7 @@ import Body from "../../../components/Text/Body";
 function RelicCard(props) {
     const model = props.model;
     return (
-        <Card sx={{minWidth: "300px"}}>
+        <Card sx={{width: "100%"}}>
             <CardMedia
                 sx={{ height: 240 }}
                 image={model.imageUrl}

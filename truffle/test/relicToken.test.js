@@ -10,7 +10,8 @@ contract("RelicToken: deployment", () => {
 contract("RelicToken: createToken", (accounts) => {
     let relicToken;
     const owner = accounts[1];  // Token owner
-    const uri = "uri";
+    const name = "uri";
+    const description = "uri";
 
     beforeEach(async () => {
         relicToken = await RelicToken.new();
@@ -19,12 +20,12 @@ contract("RelicToken: createToken", (accounts) => {
     describe("when a new token is created", async () => {
         let tx;
         beforeEach(async () => {
-            tx = await relicToken.createToken(owner, uri);
+            tx = await relicToken.createToken(owner, name, description);
         });
 
         it("emits the AccountCreated event", async () => {
             const expectedEvent = "TokenCreated";
-            const actualEvent = tx.logs[2].event;
+            const actualEvent = tx.logs[1].event;
             assert.equal(actualEvent, expectedEvent);
         })
 
@@ -38,9 +39,13 @@ contract("RelicToken: createToken", (accounts) => {
             assert.equal(actual.toNumber(), 1, "Token count should be 1 after minting");
         });
 
-        it("gets the token uri", async() => {
-            const actual = await relicToken.tokenURI(1);
-            assert.equal(actual, uri);
+        it("gets the token name", async() => {
+            const actual = await relicToken.name(1);
+            assert.equal(actual, name);
+        })
+        it("gets the token description", async() => {
+            const actual = await relicToken.description(1);
+            assert.equal(actual, description);
         })
     });
 });
@@ -51,17 +56,17 @@ contract("RelicToken: getTokenIds", (accounts) => {
     let owner1 = accounts[1];
     let owner2 = accounts[2];
 
-    let uri1 = "1";
-    let uri2 = "2";
-    let uri3 = "3";
-    let uri4 = "4";
+    let name1 = "1";
+    let name2 = "2";
+    let name3 = "3";
+    let name4 = "4";
 
     before(async () => {
         relicToken = await RelicToken.new();
-        await relicToken.createToken(owner1, uri1);
-        await relicToken.createToken(owner2, uri2);
-        await relicToken.createToken(owner1, uri3);
-        await relicToken.createToken(owner1, uri4);
+        await relicToken.createToken(owner1, name1, "");
+        await relicToken.createToken(owner2, name2, "");
+        await relicToken.createToken(owner1, name3, "");
+        await relicToken.createToken(owner1, name4, "");
     });
 
     it("gets tokens filtered by owner", async () => {

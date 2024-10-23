@@ -1,53 +1,32 @@
-import { createHelia } from 'helia';
-import { strings } from '@helia/strings';
-import { CID } from 'multiformats/cid';
-import JsonDataSource from "../storage/JsonDataSource";
-import jsonDataSource from "../storage/JsonDataSource";
 import RelicCardModel from "./RelicCard/RelicCardModel";
-import tokenRetriever from "./TokenRetriever";
 
 class InventoryService {
-    #tokenRetriever = null;
-    #jsonDataSource = null;
+    #eth = null;
 
     constructor(eth) {
-        this.#tokenRetriever = new tokenRetriever(eth);
-        this.#jsonDataSource = JsonDataSource
+        this.#eth = eth;
     }
 
-    async #putTestData() {
-        const relicCardModels = [
-            new RelicCardModel(),
-            new RelicCardModel(),
-            new RelicCardModel(),
-            new RelicCardModel(),
-            new RelicCardModel(),
-            new RelicCardModel(),
-            new RelicCardModel(),
-        ]
+    async getRelicModels() {
+        try {
+            const contract = this.#eth.contract;
+            const tokenIds = await contract.methods.getTokenIds().call( {from: this.#eth.accounts[0]});
+            const names = await Promise.all(tokenIds.map(async (tokenId) => {
+                return await contract.methods.name(tokenId).call();
+            }));
 
-        const jsons = relicCardModels.map((model) => {return JSON.stringify(model)})
-        let cids = []
+            let models = [];
+            for(let tokenId of tokenIds) {
+                let name = await contract.methods.name(tokenId).call();
+                let description = await contract.methods.description(tokenId).call();
+                models.push(new RelicCardModel(name, description));
+            }
+            return models;
 
-        for(let json of jsons) {
-            cids.push(await jsonDataSource.storeJson(json));
         }
-        return cids;
-    }
-
-    async getRelics() {
-        let cids = await this.#tokenRetriever.getTokenURIs();
-        let models = []
-        for(let cid of cids) {
-            models.push(await this.getRelic(cid));
+        catch (err) {
+            console.log(err);
         }
-        return models;
-    }
-
-    async getRelic(cid) {
-        let json = await jsonDataSource.retrieveJson(cid);
-        let model = JSON.parse(json);
-        return model;
     }
 }
 

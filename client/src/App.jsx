@@ -3,10 +3,11 @@ import Intro from "./modules/connectAccount/";
 import {ThemeProvider, useTheme} from "@mui/material";
 import {Theme} from "./Theme";
 import React, {useEffect} from "react";
-import {BrowserRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import InventoryPage from "./modules/inventory/InventoryPage";
 import "./styles.css";
+import EditRelic from "./modules/editRelic/EditRelic";
 
 
 function App() {
@@ -58,14 +59,16 @@ function App() {
         <ThemeProvider theme={Theme}>
               <div id="App">
                     {state.accounts && state.accounts.length > 0 ? (
-                        <BrowserRouter>
+                        <HashRouter>
                             <NavBar/>
                             <div className="centered-page">
                                 <Routes>
-                                    <Route path="" element={<InventoryPage/>} />
+                                    <Route path="/" element={<InventoryPage/>} />
+                                    <Route path="/relic/:id" element={<EditRelic/>} />
+
                                 </Routes>
                             </div>
-                        </BrowserRouter>
+                        </HashRouter>
                     ) : (
                         <Intro/>
                     )}
