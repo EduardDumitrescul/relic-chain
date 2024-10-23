@@ -64,7 +64,7 @@ function App() {
                             <div className="centered-page">
                                 <Routes>
                                     <Route path="/" element={<InventoryPage/>} />
-                                    <Route path="relic/:id" element={<EditRelic/>} />
+                                    <Route path="/relic/:id" element={<EditRelic/>} />
 
                                 </Routes>
                             </div>

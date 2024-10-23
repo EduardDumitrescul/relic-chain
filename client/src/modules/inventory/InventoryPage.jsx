@@ -3,21 +3,18 @@ import Headline from "../../components/Text/Headline";
 import RelicCard from "./RelicCard/RelicCard";
 import InventoryService from "./InventoryService";
 import {useEffect, useState} from "react";
-import TokenRetriever from "./TokenRetriever";
 import {useEth} from "../../contexts/EthContext";
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 function InventoryPage() {
     const {state} = useEth();
-    const navigate = useNavigate();
     const inventoryService = new InventoryService(state);
     const [cardModels, setCardModels] = useState([]);
 
     useEffect(() => {
         async function fetchCardModels() {
             try {
-                let models = await inventoryService.getRelics();
-                console.log(await (new TokenRetriever(state)).getTokenURIs());
+                let models = await inventoryService.getRelicModels();
                 setCardModels(models);
             }
             catch (err) {
@@ -27,10 +24,6 @@ function InventoryPage() {
         }
         fetchCardModels()
     }, []);
-
-    const handleAddRelicClick = () => {
-        navigate("/relic/0");
-    }
 
     console.log('InventoryPage rendered');
     return (
