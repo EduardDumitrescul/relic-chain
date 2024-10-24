@@ -9,9 +9,9 @@ class RelicService {
     async addRelic(model) {
         try {
             console.log("RelicService.addRelic()\n" + model.toString());
-            const contract = this.#eth.contract;
+            const tokenGenerator = this.#eth.tokenGenerator;
             const account = this.#eth.accounts[0];
-            await contract.methods.createToken(account, model.name, model.description).send({from: account});
+            await tokenGenerator.methods.createToken(account, model.name, model.description).send({from: account});
         }
         catch (err) {
             console.log(err)

@@ -25,7 +25,6 @@ function InventoryPage() {
         fetchCardModels()
     }, []);
 
-    console.log('InventoryPage rendered');
     return (
         <>
             <Box display="flex" alignItems="center" justifyContent="space-between">

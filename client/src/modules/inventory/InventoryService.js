@@ -9,17 +9,14 @@ class InventoryService {
 
     async getRelicModels() {
         try {
-            const contract = this.#eth.contract;
-            const tokenIds = await contract.methods.getTokenIds().call( {from: this.#eth.accounts[0]});
-            const names = await Promise.all(tokenIds.map(async (tokenId) => {
-                return await contract.methods.name(tokenId).call();
-            }));
-
+            const tokenGenerator = this.#eth.tokenGenerator;
+            const tokenIds = await tokenGenerator.methods.getTokenIds().call( {from: this.#eth.accounts[0]});
+            console.log(tokenIds);
             let models = [];
             for(let tokenId of tokenIds) {
-                let name = await contract.methods.name(tokenId).call();
-                let description = await contract.methods.description(tokenId).call();
-                models.push(new RelicCardModel(name, description));
+                let name = await tokenGenerator.methods.name(tokenId).call();
+                let description = await tokenGenerator.methods.description(tokenId).call();
+                models.push(new RelicCardModel(tokenId, name, description));
             }
             return models;
 

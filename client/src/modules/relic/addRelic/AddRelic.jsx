@@ -1,11 +1,11 @@
 import { Box, Button, TextField } from "@mui/material";
-import Title from "../../components/Text/Title";
+import Title from "../../../components/Text/Title";
 import {useEffect, useState} from "react";
-import RelicService from "./RelicService";
-import RelicModel from "./RelicModel";
-import {useEth} from "../../contexts/EthContext";
+import RelicService from "../RelicService";
+import RelicModel from "../RelicModel";
+import {useEth} from "../../../contexts/EthContext";
 
-function EditRelic() {
+function AddRelic() {
     const { state } = useEth();
     const relicService = new RelicService(state);
 
@@ -27,7 +27,7 @@ function EditRelic() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (relicService) { // Check if relicService is not null
-            const model = new RelicModel(name, description, image.toString());
+            const model = new RelicModel(name, description);
             console.log("EditRelic.handleSubmit()\n" + model);
             relicService.addRelic(model);
         } else {
@@ -70,4 +70,4 @@ function EditRelic() {
     );
 }
 
-export default EditRelic;
+export default AddRelic;

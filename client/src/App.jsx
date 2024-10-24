@@ -7,7 +7,7 @@ import {HashRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import InventoryPage from "./modules/inventory/InventoryPage";
 import "./styles.css";
-import EditRelic from "./modules/editRelic/EditRelic";
+import {Relic} from "./modules/relic/Relic";
 
 
 function App() {
@@ -64,7 +64,7 @@ function App() {
                             <div className="centered-page">
                                 <Routes>
                                     <Route path="/" element={<InventoryPage/>} />
-                                    <Route path="/relic/:id" element={<EditRelic/>} />
+                                    <Route path="/relic/:id" element={<Relic/>} />
 
                                 </Routes>
                             </div>

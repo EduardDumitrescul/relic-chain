@@ -7,23 +7,37 @@ function EthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const init = useCallback(
-    async artifact => {
-      if (artifact) {
+    async (tokenGeneratorArtifact, auctionHouseArtifact) => {
+      if (tokenGeneratorArtifact && auctionHouseArtifact) {
         const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
         const accounts = await web3.eth.requestAccounts();
         const balance = await web3.eth.getBalance(accounts[0]);
         const networkID = await web3.eth.net.getId();
-        const { abi } = artifact;
-        let address, contract;
+        const tokenGeneratorAbi = tokenGeneratorArtifact.abi;
+        const auctionHouseAbi = auctionHouseArtifact.abi;
+        let tokenGeneratorAddress, tokenGenerator;
+        let auctionHouseAddress, auctionHouse;
         try {
-          address = artifact.networks[networkID].address;
-          contract = new web3.eth.Contract(abi, address);
+          tokenGeneratorAddress = tokenGeneratorArtifact.networks[networkID].address;
+          auctionHouseAddress = auctionHouseArtifact.networks[networkID].address;
+          auctionHouse = new web3.eth.Contract(auctionHouseAbi, auctionHouseAddress)
+          tokenGenerator = new web3.eth.Contract(tokenGeneratorAbi, tokenGeneratorAddress);
+
         } catch (err) {
           console.error(err);
         }
         dispatch({
           type: actions.init,
-          data: { artifact, web3, accounts, balance, networkID, contract }
+          data: {
+            tokenGeneratorArtifact: tokenGeneratorArtifact,
+            auctionHouseArtifact: auctionHouseArtifact,
+            web3,
+            accounts,
+            balance,
+            networkID,
+            tokenGenerator: tokenGenerator,
+            auctionHouse: auctionHouse
+          }
         });
       }
     }, []);
@@ -31,8 +45,9 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/TokenGenerator.sol.json");
-        init(artifact);
+        const auctionHouseArtifact = require("../../contracts/AuctionHouse.json");
+        const tokenGeneratorArtifact = require("../../contracts/TokenGenerator.json");
+        await init(tokenGeneratorArtifact, auctionHouseArtifact);
       } catch (err) {
         console.error(err);
       }
