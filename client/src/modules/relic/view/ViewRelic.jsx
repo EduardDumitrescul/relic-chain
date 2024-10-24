@@ -46,14 +46,12 @@ export function ViewRelic() {
 
     // Function to handle adding the relic to auction
     const handleAddToAuction = async () => {
+        // TODO
         // if (!startTime || !endTime) {
         //     alert("Please select both start and end times.");
         //     return;
         // }
 
-
-        // console.log("Auction Start Time:", startTime);
-        // console.log("Auction End Time:", endTime);
         const auction = new Auction(
             1,
             500,
@@ -74,33 +72,39 @@ export function ViewRelic() {
             <Body text={model.description} />
 
             {/* Auction Time Selectors with MUI DateTimePicker */}
-            <Box component="form" sx={{ mt: 2 }}>
-                <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
-                    <DateTimePicker
-                        label="Auction Start Time"
-                        value={startTime}
-                        onChange={(newValue) => setStartTime(newValue)}
-                        renderInput={(params) => <TextField {...params} fullWidth />}
-                        sx={{ mb: 2 }}
-                    />
-                    <DateTimePicker
-                        label="Auction End Time"
-                        value={endTime}
-                        onChange={(newValue) => setEndTime(newValue)}
-                        renderInput={(params) => <TextField {...params} fullWidth />}
-                    />
-                </LocalizationProvider>
-            </Box>
+            { model.isAuctioned === false &&
+                <>
+                    <Box component="form" sx={{ mt: 2, width: "100%" }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de"
+                                              sx={{width:"100%"}}>
+                            <DateTimePicker
+                                label="Auction Start Time"
+                                value={startTime}
+                                onChange={(newValue) => setStartTime(newValue)}
+                                renderInput={(params) => <TextField {...params} fullWidth />}
+                                sx={{ mb: 2, width:"100%" }} // Margin bottom for spacing
+                            />
+                            <DateTimePicker
+                                label="Auction End Time"
+                                value={endTime}
+                                onChange={(newValue) => setEndTime(newValue)}
+                                renderInput={(params) => <TextField {...params} fullWidth />}
+                                sx={{ mb: 2, width:"100%" }} // Margin bottom for spacing
+                            />
+                        </LocalizationProvider>
+                    </Box>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleAddToAuction}
+                        sx={{ mt: 2 }}
+                    >
+                        Add to Auction
+                    </Button>
+                </>
 
-            {/* Button to add relic to auction */}
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={handleAddToAuction}
-                sx={{ mt: 2 }}
-            >
-                Add to Auction
-            </Button>
+            }
+
         </>
     );
 }

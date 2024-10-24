@@ -2,9 +2,11 @@ import {RelicModel} from "./RelicModel";
 
 class RelicService {
     #eth = null;
+    auctionHouse = null;
 
     constructor(eth) {
         this.#eth = eth;
+        this.auctionHouse = eth.auctionHouse;
     }
 
     async addRelic(model) {
@@ -41,7 +43,9 @@ class RelicService {
             const tokenGenerator = this.#eth.tokenGenerator;
             let name = await tokenGenerator.methods.name(tokenId).call();
             let description = await tokenGenerator.methods.description(tokenId).call();
-            return new RelicModel(tokenId, name, description);
+            const ids = await this.auctionHouse.methods.getAuctionedTokenIds().call({from: this.account});
+            const isAuctioned = ids.includes(tokenId);
+            return new RelicModel(tokenId, name, description, isAuctioned);
         }
         catch (err) {
             console.log(err);
