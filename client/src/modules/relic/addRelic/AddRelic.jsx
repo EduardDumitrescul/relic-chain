@@ -2,7 +2,7 @@ import { Box, Button, TextField } from "@mui/material";
 import Title from "../../../components/Text/Title";
 import {useEffect, useState} from "react";
 import RelicService from "../../RelicService";
-import {RelicModel} from "../RelicModel";
+import {RelicModel} from "../../RelicModel";
 import {useEth} from "../../../contexts/EthContext";
 
 function AddRelic() {

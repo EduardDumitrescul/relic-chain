@@ -11,7 +11,7 @@ function NavBar() {
                 <Link to="/" className={styles.link}>
                     <Typography>My Relics</Typography>
                 </Link>
-                <Link to="/" className={styles.link}>
+                <Link to="/auction" className={styles.link}>
                     <Typography>Auctions</Typography>
                 </Link>
             </div>

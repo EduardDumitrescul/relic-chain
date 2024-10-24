@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { RelicModel } from "../RelicModel";
+import { RelicModel } from "../../RelicModel";
 import Headline from "../../../components/Text/Headline";
 import Body from "../../../components/Text/Body";
 import {Button, Box, TextField} from "@mui/material"; // Import MUI components
@@ -34,15 +34,7 @@ export function ViewRelic() {
             }
         }
         fetchRelicModel();
-        auctionService.getAuctionIds();
     }, []);
-
-    function startTimeInSeconds() {
-        return startTime.unix();
-    }
-    function endTimeInSeconds() {
-        return endTime.unix();
-    }
 
     // Function to handle adding the relic to auction
     const handleAddToAuction = async () => {

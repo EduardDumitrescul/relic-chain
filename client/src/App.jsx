@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar/NavBar";
 import InventoryPage from "./modules/relic/inventory/InventoryPage";
 import "./styles.css";
 import {Relic} from "./modules/relic/Relic";
+import {BrowseAuctions} from "./modules/auction/browse/BrowseAuctions";
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
                                 <Routes>
                                     <Route path="/" element={<InventoryPage/>} />
                                     <Route path="/relic/:id" element={<Relic/>} />
+                                    <Route path="/auction" element={<BrowseAuctions/>} />
 
                                 </Routes>
                             </div>

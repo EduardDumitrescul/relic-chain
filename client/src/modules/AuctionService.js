@@ -1,3 +1,5 @@
+import {Auction} from "./auction/Auction";
+
 export class AuctionService {
     auctionHouse = null;
     tokenGenerator =  null;
@@ -28,13 +30,18 @@ export class AuctionService {
         // await this.getAuctionIds();
     }
 
-    async getAuctionIds() {
+    async getAuctions() {
         try {
             const ids = await this.auctionHouse.methods.getAuctionedTokenIds().call({from: this.account});
-            console.log(ids);
+            let auctions = [];
+            for(let id of ids) {
+                auctions.push(new Auction(id));
+            }
+            return auctions;
         }
         catch (err) {
-
+            console.log(err);
+            return [];
         }
     }
 }

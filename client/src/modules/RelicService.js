@@ -1,4 +1,4 @@
-import {RelicModel} from "./relic/RelicModel";
+import {RelicModel} from "./RelicModel";
 
 class RelicService {
     #eth = null;
