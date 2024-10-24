@@ -27,7 +27,7 @@ function AddRelic() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (relicService) { // Check if relicService is not null
-            const model = new RelicModel(name, description);
+            const model = new RelicModel(0, name, description);
             console.log("EditRelic.handleSubmit()\n" + model);
             relicService.addRelic(model);
         } else {
