@@ -4,8 +4,8 @@ import Body from "../../../components/Text/Body";
 import {useNavigate} from "react-router-dom";
 import RelicCardModel from "./RelicCardModel";
 
-function RelicCard(props: { model: RelicCardModel; }) {
-    const model: RelicCardModel = props.model;
+function RelicCard(props) {
+    const model = props.model;
 
     const navigate = useNavigate(); // Initialize useNavigate
 

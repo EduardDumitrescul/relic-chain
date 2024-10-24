@@ -30,7 +30,9 @@ function EthProvider({ children }) {
           type: actions.init,
           data: {
             tokenGeneratorArtifact: tokenGeneratorArtifact,
+            tokenGeneratorAddress: tokenGeneratorAddress,
             auctionHouseArtifact: auctionHouseArtifact,
+            auctionHouseAddress: auctionHouseAddress,
             web3,
             accounts,
             balance,
