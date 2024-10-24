@@ -1,4 +1,4 @@
-const RelicAuction = artifacts.require("RelicAuction");
+const RelicAuction = artifacts.require("AuctionHouse");
 
 module.exports = function (deployer) {
     deployer.deploy(RelicAuction);

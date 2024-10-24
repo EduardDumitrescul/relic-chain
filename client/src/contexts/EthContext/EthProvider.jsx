@@ -31,7 +31,7 @@ function EthProvider({ children }) {
   useEffect(() => {
     const tryInit = async () => {
       try {
-        const artifact = require("../../contracts/RelicToken.json");
+        const artifact = require("../../contracts/TokenGenerator.sol.json");
         init(artifact);
       } catch (err) {
         console.error(err);
