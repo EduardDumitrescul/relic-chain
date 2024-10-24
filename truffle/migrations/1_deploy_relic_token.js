@@ -1,5 +1,5 @@
-const RelicToken = artifacts.require("TokenGenerator");
+  const RelicToken = artifacts.require("TokenGenerator");
 
-module.exports = function (deployer) {
-  deployer.deploy(RelicToken);
-};
+  module.exports = function (deployer) {
+    deployer.deploy(RelicToken);
+  };
