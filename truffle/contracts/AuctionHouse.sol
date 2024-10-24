@@ -3,11 +3,14 @@ pragma solidity ^0.8.10;
 
 interface TokenGeneratorContract {
     function ownerOf(uint256 tokenId) external view returns(address);
+    function safeTransferFrom(address from, address to, uint256 tokenId) external;
+    function approve(address to, uint256 tokenId) external;
 }
 
 contract AuctionHouse {
     TokenGeneratorContract private tokenGeneratorContract;
     uint256 private auctionCounter = 0;
+    address payable private auctionHouseOwner;
 
     struct Auction {
         address payable owner;
@@ -23,6 +26,7 @@ contract AuctionHouse {
 
     constructor(address tokenGeneratorAddress){
         tokenGeneratorContract = TokenGeneratorContract(tokenGeneratorAddress);
+        auctionHouseOwner = payable(msg.sender);
     }
 
     function createAuction(address payable owner, uint256 tokenId, uint256 duration)
@@ -41,7 +45,7 @@ contract AuctionHouse {
             0,
             false
         );
-
+//        tokenGeneratorContract.approve(owner, tokenId);
         auctionCounter ++;
     }
 
@@ -72,6 +76,30 @@ contract AuctionHouse {
         auctions[auctionId].amountInWei = msg.value;
     }
 
+    function finalizeAuction(uint256 auctionId) public {
+        require(auctionHouseOwner == msg.sender, "Only the contract owner can finalize auction");
+        require(auctionId < auctionCounter);
+        require(auctions[auctionId].ended == false);
+
+        address bidder = auctions[auctionId].bidder;
+        uint256 bidAmount = auctions[auctionId].amountInWei;
+        address payable owner = auctions[auctionId].owner;
+        uint256 tokenId = auctions[auctionId].tokenId;
+
+        if(bidder == owner) {
+            return;
+        }
+
+        uint256 fee = (bidAmount * 5) / 100;
+        uint256 remainingAmount = bidAmount - fee;
+
+//        payable(address(this)).transfer(fee);
+        owner.transfer(remainingAmount);
+        tokenGeneratorContract.safeTransferFrom(owner, bidder, tokenId);
+
+        auctions[auctionId].ended = true;
+    }
+
     function getAuctionedTokenIds()
     public
     view
@@ -99,6 +127,10 @@ contract AuctionHouse {
 
     function getBidAmount(uint256 auctionId) public view returns(uint256) {
         return auctions[auctionId].amountInWei;
+    }
+
+    function getOwnerAddress() public view returns(address) {
+        return auctionHouseOwner;
     }
 
 

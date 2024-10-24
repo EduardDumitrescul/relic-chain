@@ -118,3 +118,70 @@ contract("AuctionHouse.sol: bid", (accounts) => {
 
     })
 })
+
+contract("AuctionHouse.sol: finalize", (accounts) => {
+    let tokenGenerator;
+    let auctionHouse;
+    let contractOwner = accounts[9];
+    let owner = accounts[0];
+    let bidder = accounts[1];
+    let bidAmount = web3.utils.toWei("1", "ether");
+
+    beforeEach(async () => {
+        tokenGenerator = await TokenGenerator.new();
+        auctionHouse = await AuctionHouse.new(tokenGenerator.address, {from: contractOwner});
+        await tokenGenerator.createToken(owner, "1", "1");
+        await auctionHouse.createAuction(owner, 1, 300, {from: owner});
+    })
+
+    it("only called by contract", async () => {
+        try {
+            await auctionHouse.finalizeAuction(1, {from: owner});
+            assert.fail(false);
+        }
+        catch (err) {
+            assert(err.message.includes("Only the contract owner can finalize auction"), "Error message does not match");
+        }
+    })
+
+    it("owner keeps token when no bidders", async () => {
+        await auctionHouse.finalizeAuction(0, {from: await auctionHouse.getOwnerAddress()});
+        const actualOwner = await tokenGenerator.ownerOf(1);
+        const expectedOwner = owner;
+
+        assert.equal(actualOwner, expectedOwner);
+    })
+
+    it("token is transferred", async () => {
+        await auctionHouse.placeBid(0, bidder, {from: bidder, value: bidAmount});
+        await tokenGenerator.approve(auctionHouse.address, 1);
+        await auctionHouse.finalizeAuction(0, {from: await auctionHouse.getOwnerAddress()});
+
+        const actualOwner = await tokenGenerator.ownerOf(1);
+        const expectedOwner = bidder;
+
+        assert.equal(actualOwner, expectedOwner);
+    })
+
+    it("money is transferred", async () => {
+        await tokenGenerator.approve(auctionHouse.address, 1);
+
+        const initialAuctionHouseBalance = await web3.eth.getBalance(auctionHouse.address);
+        const initialOwnerBalance = await web3.eth.getBalance(owner);
+
+        await auctionHouse.placeBid(0, bidder, { from: bidder, value: bidAmount });
+
+
+        await auctionHouse.finalizeAuction(0, { from: contractOwner });
+
+        const finalAuctionHouseBalance = await web3.eth.getBalance(auctionHouse.address);
+        const finalOwnerBalance = await web3.eth.getBalance(owner);
+
+        const fee = (bidAmount * 5) / 100; // 5% fee
+        const expectedOwnerBalance = BigInt(initialOwnerBalance) + BigInt(bidAmount) - BigInt(fee);
+        const expectedAuctionHouseBalance = BigInt(initialAuctionHouseBalance) + BigInt(fee);
+
+        assert.equal(finalOwnerBalance.toString(), expectedOwnerBalance.toString(), "Owner balance is not correct after auction finalization");
+        assert.equal(finalAuctionHouseBalance.toString(), expectedAuctionHouseBalance.toString(), "Auction house balance is not correct after fee collection");
+    });
+})
