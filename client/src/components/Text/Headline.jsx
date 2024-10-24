@@ -1,6 +1,6 @@
 import {Typography, useTheme} from "@mui/material";
 
-function Headline(props) {
+export function Headline(props) {
     const theme = useTheme();
 
     const textColor = props.color? props.color : theme.palette.primary.contrastText;

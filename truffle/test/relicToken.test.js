@@ -1,26 +1,26 @@
-const RelicToken = artifacts.require('RelicToken');
+const TokenGenerator = artifacts.require('TokenGenerator');
 
-contract("RelicToken: deployment", () => {
+contract("TokenGenerator.sol: deployment", () => {
     it("has been deployed", async () => {
-        const token = await RelicToken.deployed();
+        const token = await TokenGenerator.deployed();
         assert(token)
     })
 })
 
-contract("RelicToken: createToken", (accounts) => {
-    let relicToken;
+contract("TokenGenerator.sol: createToken", (accounts) => {
+    let tokenGenerator;
     const owner = accounts[1];  // Token owner
     const name = "uri";
     const description = "uri";
 
     beforeEach(async () => {
-        relicToken = await RelicToken.new();
+        tokenGenerator = await TokenGenerator.new();
     })
 
     describe("when a new token is created", async () => {
         let tx;
         beforeEach(async () => {
-            tx = await relicToken.createToken(owner, name, description);
+            tx = await tokenGenerator.createToken(owner, name, description);
         });
 
         it("emits the AccountCreated event", async () => {
@@ -30,27 +30,27 @@ contract("RelicToken: createToken", (accounts) => {
         })
 
         it("assigns the token to the correct owner", async () => {
-            const tokenOwner = await relicToken.ownerOf(1);  // Check owner
+            const tokenOwner = await tokenGenerator.ownerOf(1);  // Check owner
             assert.equal(tokenOwner, owner, "Token owner should match the expected owner");
         });
 
         it("increments the token count", async () => {
-            const actual = await relicToken.tokenCount();  // Fetch token count
+            const actual = await tokenGenerator.tokenCount();  // Fetch token count
             assert.equal(actual.toNumber(), 1, "Token count should be 1 after minting");
         });
 
         it("gets the token name", async() => {
-            const actual = await relicToken.name(1);
+            const actual = await tokenGenerator.name(1);
             assert.equal(actual, name);
         })
         it("gets the token description", async() => {
-            const actual = await relicToken.description(1);
+            const actual = await tokenGenerator.description(1);
             assert.equal(actual, description);
         })
     });
 });
 
-contract("RelicToken: getTokenIds", (accounts) => {
+contract("TokenGenerator.sol: getTokenIds", (accounts) => {
     let relicToken;
 
     let owner1 = accounts[1];
@@ -62,7 +62,7 @@ contract("RelicToken: getTokenIds", (accounts) => {
     let name4 = "4";
 
     before(async () => {
-        relicToken = await RelicToken.new();
+        relicToken = await TokenGenerator.new();
         await relicToken.createToken(owner1, name1, "");
         await relicToken.createToken(owner2, name2, "");
         await relicToken.createToken(owner1, name3, "");

@@ -1,31 +1,30 @@
 import {Box, Grid2} from "@mui/material";
-import Headline from "../../components/Text/Headline";
-import RelicCard from "./RelicCard/RelicCard";
-import InventoryService from "./InventoryService";
+import Headline from "../../../components/Text/Headline";
+import RelicCard from "./RelicCard";
 import {useEffect, useState} from "react";
-import {useEth} from "../../contexts/EthContext";
+import {useEth} from "../../../contexts/EthContext";
 import {Link} from 'react-router-dom';
+import RelicService from "../../RelicService";
 
 function InventoryPage() {
     const {state} = useEth();
-    const inventoryService = new InventoryService(state);
-    const [cardModels, setCardModels] = useState([]);
+    const relicService = new RelicService(state);
+    const [relics, setRelics] = useState([]);
 
     useEffect(() => {
-        async function fetchCardModels() {
+        async function fetchRelics() {
             try {
-                let models = await inventoryService.getRelicModels();
-                setCardModels(models);
+                let models = await relicService.getRelicModels();
+                setRelics(models);
             }
             catch (err) {
                 console.log("Error while trying to fetch Card Models");
-                setCardModels([]);
+                setRelics([]);
             }
         }
-        fetchCardModels()
+        fetchRelics()
     }, []);
 
-    console.log('InventoryPage rendered');
     return (
         <>
             <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -33,7 +32,7 @@ function InventoryPage() {
                 <Link to="/relic/0" className="btn btn-primary">New Relic</Link>
             </Box>
             <Grid2 container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                {cardModels.map((model, index) => (
+                {relics.map((model, index) => (
                     <Grid2 size = {4} key={index}>
                         <RelicCard model={model} />
                     </Grid2>
