@@ -5,7 +5,7 @@ import {Theme} from "./Theme";
 import React, {useEffect} from "react";
 import {HashRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
-import InventoryPage from "./modules/inventory/InventoryPage";
+import InventoryPage from "./modules/relic/inventory/InventoryPage";
 import "./styles.css";
 import {Relic} from "./modules/relic/Relic";
 

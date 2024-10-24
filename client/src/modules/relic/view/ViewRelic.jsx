@@ -5,10 +5,10 @@ import Body from "../../../components/Text/Body";
 import {Button, Box, TextField} from "@mui/material"; // Import MUI components
 import {DateTimePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {AuctionService} from "./AuctionService";
+import {AuctionService} from "../../AuctionService";
 import {useEth} from "../../../contexts/EthContext";
 import {Auction} from "./Auction";
-import RelicService from "../RelicService";
+import RelicService from "../../RelicService";
 import {useParams} from "react-router-dom";
 
 export function ViewRelic() {

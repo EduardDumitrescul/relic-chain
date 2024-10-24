@@ -2,7 +2,6 @@ import {Card, CardContent, CardMedia} from "@mui/material";
 import Title from "../../../components/Text/Title";
 import Body from "../../../components/Text/Body";
 import {useNavigate} from "react-router-dom";
-import RelicCardModel from "./RelicCardModel";
 
 function RelicCard(props) {
     const model = props.model;
@@ -17,7 +16,7 @@ function RelicCard(props) {
         <Card sx={{width: "100%"}} onClick={handleClick}>
             <CardMedia
                 sx={{ height: 240 }}
-                image={model.imageUrl}
+                image={model.imageSource}
                 title={model.name}
             />
             <CardContent sx={{ backgroundColor: "var(--secondary-main)"}}>
