@@ -10,9 +10,12 @@ contract AuctionHouse {
     uint256 private auctionCounter = 0;
 
     struct Auction {
+        address payable owner;
         uint256 tokenId;
         uint256 beginTimestamp;
         uint256 endTimestamp;
+        address payable bidder;
+        uint256 amountInWei;
         bool ended;
     }
 
@@ -22,19 +25,22 @@ contract AuctionHouse {
         tokenGeneratorContract = TokenGeneratorContract(tokenGeneratorAddress);
     }
 
-    function createAuction(uint256 tokenId, uint256 duration)
+    function createAuction(address payable owner, uint256 tokenId, uint256 duration)
     public{
         require(msg.sender == tokenGeneratorContract.ownerOf(tokenId), "Only the owner of the token can auction it");
         require(duration > 60, "An auction should be active at least one minute");
         require(tokenNotAuctioned(tokenId), "Token is already auctioned");
+        require(msg.sender == owner);
 
         auctions[auctionCounter] = Auction(
+            owner,
             tokenId,
             block.timestamp,
             block.timestamp + duration,
+            owner,
+            0,
             false
         );
-
 
         auctionCounter ++;
     }
@@ -49,6 +55,21 @@ contract AuctionHouse {
             }
         }
         return true;
+    }
+
+    function placeBid(uint256 auctionId, address payable bidder) public payable {
+        require(msg.sender != auctions[auctionId].owner, "Owner can't place bid");
+        require(msg.value > auctions[auctionId].amountInWei, "Bid amount must be higher than last bid");
+        require(auctions[auctionId].beginTimestamp <= block.timestamp && block.timestamp < auctions[auctionId].endTimestamp, "Auction must be in progress");
+        require(bidder == msg.sender);
+
+        if (auctions[auctionId].bidder != auctions[auctionId].owner) {
+            // Refund the previous bidder
+            auctions[auctionId].bidder.transfer(auctions[auctionId].amountInWei);
+        }
+
+        auctions[auctionId].bidder = bidder;
+        auctions[auctionId].amountInWei = msg.value;
     }
 
     function getAuctionedTokenIds()
@@ -70,6 +91,14 @@ contract AuctionHouse {
     returns (uint256) {
         return auctionCounter;
 
+    }
+
+    function getBidder(uint256 auctionId) public view returns(address) {
+        return auctions[auctionId].bidder;
+    }
+
+    function getBidAmount(uint256 auctionId) public view returns(uint256) {
+        return auctions[auctionId].amountInWei;
     }
 
 
