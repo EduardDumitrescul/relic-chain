@@ -9,6 +9,7 @@ export class Auction {
         tokenOwner = 0,
         bidder = 0,
         bidAmount = 0,
+        ended = false,
         tokenImageSource = "/images/relic-card-default.jpg",
     ) {
         this.id = id;
@@ -21,5 +22,6 @@ export class Auction {
         this.tokenOwner = tokenOwner;
         this.bidder = bidder;
         this.bidAmount = bidAmount;
+        this.ended = ended;
     }
 }

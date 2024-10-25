@@ -27,6 +27,17 @@ contract TokenGenerator is ERC721{
         emit TokenCreated(newTokenId);
     }
 
+    function transferToken(address from, address to, uint256 tokenId) public {
+        safeTransferFrom(from, to, tokenId);
+        for(uint256 i = 0; i < tokens[from].length; i ++) {
+            if(tokens[from][i] == tokenId) {
+                tokens[from][i] = tokens[from][tokens[from].length - 1];
+            }
+        }
+        tokens[from].pop();
+        tokens[to].push(tokenId);
+    }
+
     function name(uint256 tokenId)
     public
     view

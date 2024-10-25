@@ -3,7 +3,7 @@ pragma solidity ^0.8.10;
 
 interface TokenGeneratorContract {
     function ownerOf(uint256 tokenId) external view returns(address);
-    function safeTransferFrom(address from, address to, uint256 tokenId) external;
+    function transferToken(address from, address to, uint256 tokenId) external;
     function approve(address to, uint256 tokenId) external;
 }
 
@@ -11,6 +11,10 @@ contract AuctionHouse {
     TokenGeneratorContract private tokenGeneratorContract;
     uint256 private auctionCounter = 0;
     address payable private auctionHouseOwner;
+
+    event TokenTransferred(uint256);
+    event MoneyTransferred(uint256);
+    event SendingToken(address);
 
     struct Auction {
         address payable owner;
@@ -77,9 +81,10 @@ contract AuctionHouse {
     }
 
     function finalizeAuction(uint256 auctionId) public {
-        require(auctionHouseOwner == msg.sender, "Only the contract owner can finalize auction");
-        require(auctionId < auctionCounter);
-        require(auctions[auctionId].ended == false);
+        require(auctions[auctionId].owner == msg.sender, "Only the token owner can finalize auction");
+        require(auctionId < auctionCounter, "Auction exists");
+        require(auctions[auctionId].ended == false, "Auction is in progress");
+        require(msg.sender == tokenGeneratorContract.ownerOf(auctions[auctionId].tokenId), "Token owner is calling");
 
         address bidder = auctions[auctionId].bidder;
         uint256 bidAmount = auctions[auctionId].amountInWei;
@@ -87,17 +92,21 @@ contract AuctionHouse {
         uint256 tokenId = auctions[auctionId].tokenId;
 
         if(bidder == owner) {
+            auctions[auctionId].ended = true;
             return;
         }
+
 
         uint256 fee = (bidAmount * 5) / 100;
         uint256 remainingAmount = bidAmount - fee;
 
-//        payable(address(this)).transfer(fee);
         owner.transfer(remainingAmount);
-        tokenGeneratorContract.safeTransferFrom(owner, bidder, tokenId);
+        emit MoneyTransferred(remainingAmount);
+        emit SendingToken(bidder);
+        tokenGeneratorContract.transferToken(owner, bidder, tokenId);
 
         auctions[auctionId].ended = true;
+        emit TokenTransferred(tokenId);
     }
 
     function getAuctionedTokenIds()

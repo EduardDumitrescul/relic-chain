@@ -12,10 +12,15 @@ export class AuctionService {
         this.tokenGenerator = this.eth.tokenGenerator;
         this.account = this.eth.accounts[0];
         this.auctionHouseAddress = this.eth.auctionHouseAddress;
+        this.tokenGeneratorAddress = this.eth.tokenGeneratorAddress;
     }
 
     async createAuction(auction) {
         try {
+
+            await this.tokenGenerator.methods
+                .approve(this.tokenGeneratorAddress, auction.tokenId)
+                .send({from: this.account});
             await this.tokenGenerator.methods
                 .approve(this.auctionHouseAddress, auction.tokenId)
                 .send({from: this.account});
@@ -62,8 +67,20 @@ export class AuctionService {
             tokenDesc,
             tokenOwner,
             auction.bidder,
-            auction.amountInWei
+            auction.amountInWei,
+            auction.ended
         );
+    }
+
+    async finalize(auctionId) {
+        try {
+            await this.auctionHouse.methods
+                .finalizeAuction(auctionId)
+                .send({from: this.account});
+        }
+        catch(err) {
+            console.log(err);
+        }
     }
 
     async placeBid(auctionId, bidAmount) {

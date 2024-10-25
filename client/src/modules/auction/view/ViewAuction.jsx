@@ -27,6 +27,10 @@ export function ViewAuction() {
     const currentAccountIsOwner = () => {
         return auction.tokenOwner === state.accounts[0]
     }
+    const auctionInProgress = () => {
+        console.log(auction.beginTimestamp + "   " + Date.now() / 1000);
+        return auction.beginTimestamp < Date.now() / 1000 && Date.now() / 1000 < auction.endTimestamp;
+    }
 
     const handleBidSubmit = async (e) => {
         e.preventDefault();
@@ -67,7 +71,7 @@ export function ViewAuction() {
                         Auction Ends: {new Date(auction.endTimestamp * 1000).toLocaleString()}
                     </Typography>
                 </CardContent>
-                {currentAccountIsOwner() === false &&
+                {currentAccountIsOwner() === false && auctionInProgress() &&
                     <CardActions>
                         <Box component="form" onSubmit={handleBidSubmit} display="flex" flexDirection="column" width="100%" px={2}>
                             <TextField
