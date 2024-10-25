@@ -24,9 +24,19 @@ export function ViewAuction() {
         fetchAuction();
     }, [id]);
 
+    const currentAccountIsOwner = () => {
+        return auction.tokenOwner === state.accounts[0]
+    }
+
     const handleBidSubmit = async (e) => {
         e.preventDefault();
-        alert(bidAmount);
+
+        if(bidAmount*1e18 < auction.bidAmount) {
+            alert("Please place a higher bid");
+            return;
+        }
+
+        await auctionService.placeBid(auction.id, bidAmount);
     };
 
     if (!auction) return <Typography>Loading auction details...</Typography>;
@@ -48,7 +58,7 @@ export function ViewAuction() {
                         {auction.tokenDescription}
                     </Typography>
                     <Typography variant="h6">
-                        Current Bid: ${auction.bidAmount}
+                        Current Bid: {auction.bidAmount / 1e18}ETH
                     </Typography>
                     <Typography color="text.secondary">
                         Auction Starts: {new Date(auction.beginTimestamp * 1000).toLocaleString()}
@@ -57,22 +67,24 @@ export function ViewAuction() {
                         Auction Ends: {new Date(auction.endTimestamp * 1000).toLocaleString()}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Box component="form" onSubmit={handleBidSubmit} display="flex" flexDirection="column" width="100%" px={2}>
-                        <TextField
-                            label="Place your bid"
-                            type="number"
-                            value={bidAmount}
-                            onChange={(e) => setBidAmount(e.target.value)}
-                            inputProps={{ min: auction.bidAmount + 1 }}
-                            fullWidth
-                            margin="normal"
-                        />
-                        <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Submit Bid
-                        </Button>
-                    </Box>
-                </CardActions>
+                {currentAccountIsOwner() === false &&
+                    <CardActions>
+                        <Box component="form" onSubmit={handleBidSubmit} display="flex" flexDirection="column" width="100%" px={2}>
+                            <TextField
+                                label="Place your bid"
+                                type="number"
+                                value={bidAmount}
+                                onChange={(e) => setBidAmount(e.target.value)}
+                                fullWidth
+                                margin="normal"
+                            />
+                            <Button type="submit" variant="contained" color="primary" fullWidth>
+                                Submit Bid
+                            </Button>
+                        </Box>
+                    </CardActions>
+                }
+
             </Card>
         </Box>
     );

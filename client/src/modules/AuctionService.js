@@ -47,9 +47,12 @@ export class AuctionService {
     }
 
     async getAuction(id) {
+        const web3 =this.eth.web3;
+
         let auction = await this.auctionHouse.methods.getAuction(id).call({from: this.account});
         let tokenName = await this.tokenGenerator.methods.name(auction.tokenId).call({from: this.account});
         let tokenDesc = await this.tokenGenerator.methods.description(auction.tokenId).call({from: this.account});
+        let tokenOwner = await this.tokenGenerator.methods.ownerOf(auction.tokenId).call({form: this.account});
         return new Auction(
             id,
             auction.beginTimestamp,
@@ -57,9 +60,27 @@ export class AuctionService {
             auction.tokenId,
             tokenName,
             tokenDesc,
+            tokenOwner,
             auction.bidder,
-            auction.bidAmount,
+            auction.amountInWei
         );
+    }
+
+    async placeBid(auctionId, bidAmount) {
+        try {
+            if (!bidAmount || bidAmount <= 0)
+                throw new Error("Invalid bid amount.");
+
+            const account = this.eth.accounts[0];
+            const auctionHouse = this.eth.auctionHouse;
+            const web3 = this.eth.web3;
+
+            await auctionHouse.methods.placeBid(auctionId, account)
+                .send({ from: account, value: web3.utils.toWei(bidAmount.toString(), "ether") });
+        } catch (error) {
+            console.error("Error placing bid:", error);
+            throw error;
+        }
     }
 
 }

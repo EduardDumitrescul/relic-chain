@@ -6,6 +6,7 @@ export class Auction {
         tokenId = 0,
         tokenName = "name",
         tokenDescription = "desc",
+        tokenOwner = 0,
         bidder = 0,
         bidAmount = 0,
         tokenImageSource = "/images/relic-card-default.jpg",
@@ -17,6 +18,7 @@ export class Auction {
         this.tokenName = tokenName;
         this.tokenDescription = tokenDescription;
         this.tokenImageSource = tokenImageSource;
+        this.tokenOwner = tokenOwner;
         this.bidder = bidder;
         this.bidAmount = bidAmount;
     }
