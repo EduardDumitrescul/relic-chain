@@ -12,7 +12,7 @@ export class Auction {
     ) {
         this.id = id;
         this.beginTimestamp = beginTimestamp;
-        this.endTimeStamp = endTimestamp;
+        this.endTimestamp = endTimestamp;
         this.tokenId = tokenId;
         this.tokenName = tokenName;
         this.tokenDescription = tokenDescription;
