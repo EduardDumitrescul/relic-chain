@@ -32,10 +32,23 @@ export class AuctionService {
 
     async getAuctions() {
         try {
-            const ids = await this.auctionHouse.methods.getAuctionedTokenIds().call({from: this.account});
+            const numberOfAuctions = await this.auctionHouse.methods.getNumberOfAuctions().call({from: this.account});
+
             let auctions = [];
-            for(let id of ids) {
-                auctions.push(new Auction(id));
+            for(let id = 0; id < numberOfAuctions; id ++) {
+                let auction = await this.auctionHouse.methods.getAuction(id).call({from: this.account});
+                let tokenName = await this.tokenGenerator.methods.name(auction.tokenId).call({from: this.account});
+                let tokenDesc = await this.tokenGenerator.methods.description(auction.tokenId).call({from: this.account});
+                auctions.push(new Auction(
+                    id,
+                    auction.beginTimestamp,
+                    auction.endTimestamp,
+                    auction.tokenId,
+                    tokenName,
+                    tokenDesc,
+                    auction.bidder,
+                    auction.bidAmount,
+                ));
             }
             return auctions;
         }

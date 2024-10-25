@@ -1,18 +1,22 @@
-import {RelicModel} from "../RelicModel";
-
 export class Auction {
     constructor(
         id = 0,
-        startTime = 0,
-        duration = 0,
-        token = new RelicModel(),
+        beginTimestamp = 0,
+        endTimestamp = 0,
+        tokenId = 0,
+        tokenName = "name",
+        tokenDescription = "desc",
         bidder = 0,
         bidAmount = 0,
+        tokenImageSource = "/images/relic-card-default.jpg",
     ) {
         this.id = id;
-        this.startTime = startTime;
-        this.duration = duration;
-        this.token = token;
+        this.beginTimestamp = beginTimestamp;
+        this.endTimeStamp = endTimestamp;
+        this.tokenId = tokenId;
+        this.tokenName = tokenName;
+        this.tokenDescription = tokenDescription;
+        this.tokenImageSource = tokenImageSource;
         this.bidder = bidder;
         this.bidAmount = bidAmount;
     }

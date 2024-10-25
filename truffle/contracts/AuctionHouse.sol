@@ -112,6 +112,10 @@ contract AuctionHouse {
         return ids;
     }
 
+    function getAuction(uint256 auctionId) public view returns (Auction memory) {
+        return auctions[auctionId];
+    }
+
 
     function getNumberOfAuctions()
     public
