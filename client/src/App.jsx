@@ -9,6 +9,7 @@ import InventoryPage from "./modules/relic/inventory/InventoryPage";
 import "./styles.css";
 import {Relic} from "./modules/relic/Relic";
 import {BrowseAuctions} from "./modules/auction/browse/BrowseAuctions";
+import {ViewAuction} from "./modules/auction/view/ViewAuction";
 
 
 function App() {
@@ -67,6 +68,7 @@ function App() {
                                     <Route path="/" element={<InventoryPage/>} />
                                     <Route path="/relic/:id" element={<Relic/>} />
                                     <Route path="/auction" element={<BrowseAuctions/>} />
+                                    <Route path="/auction/:id" element={<ViewAuction/>} />
 
                                 </Routes>
                             </div>

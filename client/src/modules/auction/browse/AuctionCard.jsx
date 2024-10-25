@@ -1,12 +1,18 @@
 import {Card, CardContent, CardMedia} from "@mui/material";
 import Title from "../../../components/Text/Title";
 import Body from "../../../components/Text/Body";
+import {useNavigate} from "react-router-dom";
 
 export function AuctionCard(props) {
     const auction = props.model;
+    const navigate = useNavigate();
+
+    const handleOnClick = () => {
+        navigate(`/auction/${auction.id}`);
+    }
 
     return (
-        <Card sx={{width: "100%"}}>
+        <Card sx={{width: "100%"}} onClick={handleOnClick}>
             <CardMedia
                 sx={{ height: 240 }}
                 image={auction.tokenImageSource}
