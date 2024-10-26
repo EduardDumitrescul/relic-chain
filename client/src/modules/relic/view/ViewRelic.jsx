@@ -9,7 +9,7 @@ import {AuctionService} from "../../AuctionService";
 import {useEth} from "../../../contexts/EthContext";
 import {Auction} from "./Auction";
 import RelicService from "../../RelicService";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import dayjs from "dayjs";
 
 export function ViewRelic() {
@@ -17,6 +17,7 @@ export function ViewRelic() {
     const {id} = useParams();
     const {state} = useEth();
     const auctionService = new AuctionService(state);
+    const navigate = useNavigate();
 
     const [endTime, setEndTime] = useState(dayjs());
 
@@ -35,21 +36,19 @@ export function ViewRelic() {
         fetchRelicModel();
     }, [id, state]);
 
-    // Function to handle adding the relic to auction
     const handleAddToAuction = async () => {
-        // TODO
-        // if (!startTime || !endTime) {
-        //     alert("Please select both start and end times.");
-        //     return;
-        // }
-
         const auction = new Auction(
             dayjs().unix(),
             dayjs().unix() + 61,
             model.id
         );
-        await auctionService.createAuction(auction);
-
+        const success = await auctionService.createAuction(auction);
+        if(success === true) {
+            navigate(`/auction`);
+        }
+        else {
+            alert("Failure! Auction hasn't been created");
+        }
     };
 
     return (
@@ -68,13 +67,6 @@ export function ViewRelic() {
                     <Box component="form" sx={{ mt: 2, width: "100%" }}>
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de"
                                               sx={{width:"100%"}}>
-                            {/*<DateTimePicker*/}
-                            {/*    label="Auction Start Time"*/}
-                            {/*    value={startTime}*/}
-                            {/*    onChange={(newValue) => setStartTime(newValue)}*/}
-                            {/*    renderInput={(params) => <TextField {...params} fullWidth />}*/}
-                            {/*    sx={{ mb: 2, width:"100%" }} // Margin bottom for spacing*/}
-                            {/*/>*/}
                             <DateTimePicker
                                 label="Auction End Time"
                                 value={endTime}
@@ -82,6 +74,8 @@ export function ViewRelic() {
                                 renderInput={(params) => <TextField {...params} fullWidth />}
                                 sx={{ mb: 2, width:"100%" }} // Margin bottom for spacing
                             />
+                            <p>The end date picker is disabled for testing and demonstration purposes.</p>
+                            <p>The auction will be active for 61 seconds.</p>
                         </LocalizationProvider>
                     </Box>
                     <Button

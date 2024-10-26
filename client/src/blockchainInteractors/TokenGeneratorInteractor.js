@@ -1,9 +1,11 @@
 import {RelicModel} from "../models/RelicModel";
+import {handleTransaction} from "./handleTransaction";
 
 export const tokenGeneratorInteractor = {
 
     initialize(state) {
         console.log("init" + state);
+        this.web3 = state.web3;
         this.account = state.accounts[0];
         this.tokenGenerator = state.tokenGenerator;
     },
@@ -13,19 +15,15 @@ export const tokenGeneratorInteractor = {
     },
 
     async createToken(model) {
-        try {
-            await this.tokenGenerator.methods
+        return await handleTransaction(
+            this.web3,
+            this.tokenGenerator.methods
                 .createToken(this.account, model.name, model.description)
-                .send({from: this.account});
-        }
-        catch (err) {
-            console.log(`Error while trying to create token: ${err}`);
-            return false;
-        }
+                .send({from: this.account})
+        );
     },
 
     async getTokensForCurrentAccount() {
-        console.log(this.tokenGenerator);
         try {
             const tokenIds = await this.tokenGenerator.methods
                 .getTokenIds()
@@ -92,14 +90,12 @@ export const tokenGeneratorInteractor = {
     },
 
     async approve(address, tokenId) {
-        try {
+        return await handleTransaction(
+            this.web3,
             this.tokenGenerator.methods
                 .approve(address, tokenId)
-                .send({from: this.account});
-        }
-        catch (err) {
-            console.log(`Error while approving address=${address} for tokenId=${tokenId}: ${err}`);
-        }
+                .send({from: this.account})
+        );
     },
 
     listenForTokenCreated(callback) {

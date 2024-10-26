@@ -1,8 +1,9 @@
 import {Auction} from "../models/Auction";
+import {handleTransaction} from "./handleTransaction";
 
 export const auctionHouseInteractor = {
     initialize(state) {
-        console.log("init" + state);
+        this.web3 = state.web3;
         this.account = state.accounts[0];
         this.auctionHouse = state.auctionHouse;
         this.toWei = state.web3.utils.toWei;
@@ -13,14 +14,12 @@ export const auctionHouseInteractor = {
     },
 
     async createAuction(auction) {
-        try {
-            await this.auctionHouse.methods
+        return await handleTransaction(
+            this.web3,
+            this.auctionHouse.methods
                 .createAuction(this.account, auction.tokenId, auction.duration())
-                .send({from: this.account});
-        }
-        catch(err) {
-            console.log(`Error while trying to create auction=${auction}: ${err}`);
-        }
+                .send({from: this.account})
+        );
     },
 
     async getAuctions() {
@@ -91,14 +90,12 @@ export const auctionHouseInteractor = {
     },
 
     async finalize(auctionId) {
-        try {
-            await this.auctionHouse.methods
+        return await handleTransaction(
+            this.web3,
+            this.auctionHouse.methods
                 .finalizeAuction(auctionId)
-                .send({from: this.account});
-        }
-        catch(err) {
-            console.log(`Error while trying to finalize auction with id=${auctionId}: ${err}`);
-        }
+                .send({from: this.account})
+        );
     },
 
     listenForBidPlaced(callback) {

@@ -9,9 +9,12 @@ export class AuctionService {
     }
 
     async createAuction(auction) {
-        await tokenGeneratorInteractor.approve(this.auctionHouseAddress, auction.tokenId);
-        // await tokenGeneratorInteractor.approve(this.tokenGeneratorAddress, auction.tokenId);
-        await auctionHouseInteractor.createAuction(auction);
+        const approved = await tokenGeneratorInteractor.approve(this.auctionHouseAddress, auction.tokenId);
+        if(approved) {
+            const created = await auctionHouseInteractor.createAuction(auction);
+            return created;
+        }
+        return false;
     }
 
     async getPendingAuctions() {
