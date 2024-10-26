@@ -109,6 +109,27 @@ export const auctionHouseInteractor = {
         }
     },
 
+    async pendingWithdrawal() {
+        try {
+            return await this.auctionHouse.methods
+                .pendingWithdrawal()
+                .call({from: this.account});
+        }
+        catch(err) {
+            console.log(`Error while fetching pending withdrawal ${err}`);
+            return 0;
+        }
+    },
+
+    async withdraw() {
+        return handleTransaction(
+            this.web3,
+            this.auctionHouse.methods
+                .withdraw()
+                .send({from: this.account})
+        );
+    },
+
     listenForBidPlaced(callback) {
         this.auctionHouse.events.BidPlaced({}, (error, event) => {
             if (error) {

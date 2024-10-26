@@ -70,6 +70,8 @@ contract AuctionHouse {
         _;
     }
 
+    mapping(address => uint256) private pendingWithdrawals;
+
     function placeBid(uint256 auctionId, address payable bidder)
     external payable onlyNotTokenOwner(auctionId) {
         require(msg.value > auctions[auctionId].lastBidAmountInWei, "Bid amount must be higher than last bid");
@@ -77,13 +79,26 @@ contract AuctionHouse {
 
         if (auctions[auctionId].lastBidder != auctions[auctionId].tokenOwner) {
             // Refund the previous bidder
-            auctions[auctionId].lastBidder.transfer(auctions[auctionId].lastBidAmountInWei);
+            pendingWithdrawals[auctions[auctionId].lastBidder] += auctions[auctionId].lastBidAmountInWei;
         }
 
         auctions[auctionId].lastBidder = bidder;
         auctions[auctionId].lastBidAmountInWei = msg.value;
 
         emit BidPlaced(bidder);
+    }
+
+    function withdraw() external {
+        uint256 amount = pendingWithdrawals[msg.sender];
+        require(amount > 0, "No funds to withdraw");
+
+        pendingWithdrawals[msg.sender] = 0;
+        payable(msg.sender).transfer(amount);
+    }
+
+    function pendingWithdrawal()
+    external view returns(uint256) {
+        return pendingWithdrawals[msg.sender];
     }
 
     modifier tokenTransferred(uint256 auctionId){
