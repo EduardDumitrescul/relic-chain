@@ -1,5 +1,6 @@
 import {tokenGeneratorInteractor} from "../blockchainInteractors/TokenGeneratorInteractor";
 import {RelicModel} from "../models/RelicModel";
+import {auctionHouseInteractor} from "../blockchainInteractors/AuctionHouseInteractor";
 
 class RelicService {
     #eth = null;
@@ -22,9 +23,7 @@ class RelicService {
         try {
             const name = await tokenGeneratorInteractor.getTokenName(tokenId);
             const description = await tokenGeneratorInteractor.getTokenDescription(tokenId);
-            const ids = await this.auctionHouse.methods.getAuctionedTokenIds().call({from: this.account});
-            const isAuctioned = ids.includes(tokenId);
-            console.log(name);
+            const isAuctioned = await auctionHouseInteractor.isTokenAuctioned(tokenId);
             return new RelicModel(tokenId, name, description, isAuctioned);
         }
         catch (err) {

@@ -53,7 +53,7 @@ export const auctionHouseInteractor = {
                 "tokenDescription",
                 "tokenOwner",
                 auction.lastBidder,
-                auction.bidAmountInWei,
+                auction.lastBidAmountInWei,
                 auction.hasFinalized
             );
         }
@@ -96,6 +96,17 @@ export const auctionHouseInteractor = {
                 .finalizeAuction(auctionId)
                 .send({from: this.account})
         );
+    },
+
+    async isTokenAuctioned(tokenId) {
+        try {
+            return await this.auctionHouse.methods
+                .isTokenAuctioned(tokenId)
+                .call();
+        } catch (err) {
+            console.error(`Error while checking if token ${tokenId} is auctioned: ${err}`);
+            return false;
+        }
     },
 
     listenForBidPlaced(callback) {

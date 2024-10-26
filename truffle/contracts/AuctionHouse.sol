@@ -134,6 +134,16 @@ contract AuctionHouse {
         return ids;
     }
 
+    function isTokenAuctioned(uint256 tokenId)
+    external view returns(bool) {
+        for(uint256 i=0; i<auctionCounter; i ++) {
+            if(auctions[i].tokenId == tokenId && auctions[i].hasFinalized == false) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     function getAuction(uint256 auctionId) external view returns (Auction memory) {
         return auctions[auctionId];
     }

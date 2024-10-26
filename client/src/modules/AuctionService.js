@@ -41,9 +41,9 @@ export class AuctionService {
             token.name,
             token.description,
             tokenOwner,
-            auction.lastBidder,
-            auction.lastBidAmountInWei,
-            auction.hasFinalized
+            auction.bidder,
+            auction.bidAmount,
+            auction.ended
         );
     }
 
