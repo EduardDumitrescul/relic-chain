@@ -21,9 +21,9 @@ export class AuctionService {
             await this.tokenGenerator.methods
                 .approve(this.tokenGeneratorAddress, auction.tokenId)
                 .send({from: this.account});
-            await this.tokenGenerator.methods
-                .approve(this.auctionHouseAddress, auction.tokenId)
-                .send({from: this.account});
+            // await this.tokenGenerator.methods
+            //     .approve(this.auctionHouseAddress, auction.tokenId)
+            //     .send({from: this.account});
             await this.auctionHouse.methods
                 .createAuction(this.account, auction.tokenId, auction.duration())
                 .send({from: this.account});
@@ -63,9 +63,9 @@ export class AuctionService {
             tokenName,
             tokenDesc,
             tokenOwner,
-            auction.bidder,
-            auction.amountInWei,
-            auction.ended
+            auction.lastBidder,
+            auction.bidAmountInWei,
+            auction.hasFinalized
         );
     }
 
