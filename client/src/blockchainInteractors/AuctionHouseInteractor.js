@@ -79,7 +79,7 @@ export const auctionHouseInteractor = {
     async placeBid(auctionId, bidAmount) {
         try {
             await this.auctionHouse.methods
-                .placeBid(auctionId, this.account)
+                .placeBid(auctionId)
                 .send({
                     from: this.account,
                     value: this.toWei(bidAmount.toString(), "ether")
@@ -112,7 +112,7 @@ export const auctionHouseInteractor = {
     async pendingWithdrawal() {
         try {
             return await this.auctionHouse.methods
-                .pendingWithdrawal()
+                .pendingWithdrawal(this.account)
                 .call({from: this.account});
         }
         catch(err) {
