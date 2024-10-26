@@ -99,5 +99,15 @@ export const auctionHouseInteractor = {
         catch(err) {
             console.log(`Error while trying to finalize auction with id=${auctionId}: ${err}`);
         }
+    },
+
+    listenForBidPlaced(callback) {
+        this.auctionHouse.events.BidPlaced({}, (error, event) => {
+            if (error) {
+                console.error("Error listening for TokenCreated events:", error);
+                return;
+            }
+            callback(event.returnValues);
+        });
     }
 }

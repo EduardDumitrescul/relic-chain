@@ -14,7 +14,7 @@ export function BrowseAuctions() {
         const auctionService = new AuctionService(state);
         async function fetchAuctions() {
             try {
-                let models = await auctionService.getAuctions();
+                let models = await auctionService.getPendingAuctions();
                 setAuctions(models);
             }
             catch (err) {

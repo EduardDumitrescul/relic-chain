@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract TokenGenerator is ERC721{
     uint256 public tokenCount = 0;
 
-    event TokenCreated(uint256 value);
+    event TokenCreated(uint256 id, string name, address owner);
 
     mapping(address => uint256[]) private tokens;
     mapping(uint256 => string) private names;
@@ -21,7 +21,7 @@ contract TokenGenerator is ERC721{
         tokens[owner].push(newTokenId);
         names[newTokenId] = name;
         descriptions[newTokenId] = description;
-        emit TokenCreated(newTokenId);
+        emit TokenCreated(newTokenId, name, owner);
     }
 
     function transferToken(address from, address to, uint256 tokenId) external {

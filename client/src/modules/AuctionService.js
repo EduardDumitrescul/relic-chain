@@ -14,12 +14,15 @@ export class AuctionService {
         await auctionHouseInteractor.createAuction(auction);
     }
 
-    async getAuctions() {
+    async getPendingAuctions() {
         const auctions = await auctionHouseInteractor.getAuctions();
+        const pendingAuctions = [];
         for(let i = 0; i < auctions.length; i++) {
-            auctions[i] = await this.getAuction(auctions[i].id);
+            if(auctions[i].ended === false) {
+                pendingAuctions.push(await this.getAuction(auctions[i].id));
+            }
         }
-        return auctions;
+        return pendingAuctions;
     }
 
     async getAuction(id) {
@@ -47,6 +50,10 @@ export class AuctionService {
 
     async placeBid(auctionId, bidAmount) {
         await auctionHouseInteractor.placeBid(auctionId, bidAmount);
+    }
+
+    listenForBidPlaced(callback) {
+       auctionHouseInteractor.listenForBidPlaced(callback);
     }
 
 }

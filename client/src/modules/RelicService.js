@@ -32,6 +32,10 @@ class RelicService {
             return new RelicModel();
         }
     }
+
+    listenForTokenCreated(callback) {
+        tokenGeneratorInteractor.listenForTokenCreated(callback);
+    }
 }
 
 export default RelicService;

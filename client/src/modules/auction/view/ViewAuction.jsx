@@ -25,6 +25,14 @@ export function ViewAuction() {
         fetchAuction();
     }, [state, id]);
 
+    useEffect(() => {
+        auctionService.current.listenForBidPlaced((event) => {
+            if(event[0] === state.accounts[0]) {
+                window.location.reload();
+            }
+        })
+    }, [state.accounts]);
+
     const currentAccountIsOwner = () => {
         return auction.tokenOwner === state.accounts[0]
     }

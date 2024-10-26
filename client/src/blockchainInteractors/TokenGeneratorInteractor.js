@@ -20,6 +20,7 @@ export const tokenGeneratorInteractor = {
         }
         catch (err) {
             console.log(`Error while trying to create token: ${err}`);
+            return false;
         }
     },
 
@@ -99,6 +100,16 @@ export const tokenGeneratorInteractor = {
         catch (err) {
             console.log(`Error while approving address=${address} for tokenId=${tokenId}: ${err}`);
         }
+    },
+
+    listenForTokenCreated(callback) {
+        this.tokenGenerator.events.TokenCreated({}, (error, event) => {
+            if (error) {
+                console.error("Error listening for TokenCreated events:", error);
+                return;
+            }
+            callback(event.returnValues);
+        });
     }
 
 }

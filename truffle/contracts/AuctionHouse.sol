@@ -10,6 +10,7 @@ contract AuctionHouse {
     uint256 private auctionCounter = 0;
     address payable private auctionHouseOwner;
 
+    event BidPlaced(address);
     event TokenTransferred(uint256);
     event MoneyTransferred(uint256);
     event SendingToken(address);
@@ -81,6 +82,8 @@ contract AuctionHouse {
 
         auctions[auctionId].lastBidder = bidder;
         auctions[auctionId].lastBidAmountInWei = msg.value;
+
+        emit BidPlaced(bidder);
     }
 
     modifier tokenTransferred(uint256 auctionId){
