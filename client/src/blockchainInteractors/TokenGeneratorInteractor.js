@@ -3,13 +3,18 @@ import {RelicModel} from "../models/RelicModel";
 export const tokenGeneratorInteractor = {
 
     initialize(state) {
+        console.log("init" + state);
         this.account = state.accounts[0];
-        this.tokenGeneratorContract = state.tokenGenerator;
+        this.tokenGenerator = state.tokenGenerator;
+    },
+
+    ready() {
+        return this.tokenGenerator != null;
     },
 
     async createToken(model) {
         try {
-            await this.tokenGeneratorContract.methods
+            await this.tokenGenerator.methods
                 .createToken(this.account, model.name, model.description)
                 .send({from: this.account});
         }
@@ -19,9 +24,9 @@ export const tokenGeneratorInteractor = {
     },
 
     async getTokensForCurrentAccount() {
-        console.log(this.tokenGeneratorContract);
+        console.log(this.tokenGenerator);
         try {
-            const tokenIds = await this.tokenGeneratorContract.methods
+            const tokenIds = await this.tokenGenerator.methods
                 .getTokenIds()
                 .call({from: this.account});
 
@@ -40,8 +45,8 @@ export const tokenGeneratorInteractor = {
 
     async getToken(tokenId) {
         try {
-            const name = await this.tokenGeneratorContract.methods.name(tokenId).call();
-            const description = await this.tokenGeneratorContract.methods.description(tokenId).call();
+            const name = await this.tokenGenerator.methods.name(tokenId).call();
+            const description = await this.tokenGenerator.methods.description(tokenId).call();
             return new  RelicModel(tokenId, name, description);
         }
         catch (err) {
@@ -52,7 +57,7 @@ export const tokenGeneratorInteractor = {
 
     async getTokenName(tokenId) {
         try {
-            const name = await this.tokenGeneratorContract.methods.name(tokenId).call();
+            const name = await this.tokenGenerator.methods.name(tokenId).call();
             return name;
         }
         catch (err) {
@@ -63,7 +68,7 @@ export const tokenGeneratorInteractor = {
 
     async getTokenDescription(tokenId) {
         try {
-            const description = await this.tokenGeneratorContract.methods.name(tokenId).call();
+            const description = await this.tokenGenerator.methods.name(tokenId).call();
             return description;
         }
         catch (err) {
@@ -74,7 +79,7 @@ export const tokenGeneratorInteractor = {
 
     async getTokenOwner(tokenId) {
         try {
-            const owner = this.tokenGeneratorContract.methods
+            const owner = this.tokenGenerator.methods
                 .ownerOf(tokenId)
                 .call();
             return owner;
@@ -87,7 +92,7 @@ export const tokenGeneratorInteractor = {
 
     async approve(address, tokenId) {
         try {
-            this.tokenGeneratorContract.methods
+            this.tokenGenerator.methods
                 .approve(address, tokenId)
                 .send({from: this.account});
         }

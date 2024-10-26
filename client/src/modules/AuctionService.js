@@ -1,95 +1,52 @@
 import {Auction} from "../models/Auction";
 import {tokenGeneratorInteractor} from "../blockchainInteractors/TokenGeneratorInteractor";
+import {auctionHouseInteractor} from "../blockchainInteractors/AuctionHouseInteractor";
 
 export class AuctionService {
-    auctionHouse = null;
-    account = null;
-    auctionHouseAddress = null;
-
     constructor(eth) {
-        this.eth = eth;
-        this.auctionHouse = this.eth.auctionHouse;
-        this.account = this.eth.accounts[0];
-        this.auctionHouseAddress = this.eth.auctionHouseAddress;
-        this.tokenGeneratorAddress = this.eth.tokenGeneratorAddress;
+        this.auctionHouseAddress = eth.auctionHouseAddress;
+        this.tokenGeneratorAddress = eth.tokenGeneratorAddress;
     }
 
     async createAuction(auction) {
-        try {
-
-            await tokenGeneratorInteractor.approve(this.auctionHouseAddress, auction.tokenId);
-            // await tokenGeneratorInteractor.approve(this.tokenGeneratorAddress, auction.tokenId);
-            await this.auctionHouse.methods
-                .createAuction(this.account, auction.tokenId, auction.duration())
-                .send({from: this.account});
-        }
-        catch(err) {
-            console.log(err);
-        }
+        await tokenGeneratorInteractor.approve(this.auctionHouseAddress, auction.tokenId);
+        // await tokenGeneratorInteractor.approve(this.tokenGeneratorAddress, auction.tokenId);
+        await auctionHouseInteractor.createAuction(auction);
     }
 
     async getAuctions() {
-        try {
-            const numberOfAuctions = await this.auctionHouse.methods.getNumberOfAuctions().call({from: this.account});
-
-            let auctions = [];
-            for(let id = 0; id < numberOfAuctions; id ++) {
-                let auction = await this.getAuction(id);
-                auctions.push(auction);
-            }
-            return auctions;
+        const auctions = await auctionHouseInteractor.getAuctions();
+        for(let i = 0; i < auctions.length; i++) {
+            auctions[i] = await this.getAuction(auctions[i].id);
         }
-        catch (err) {
-            console.log(err);
-            return [];
-        }
+        return auctions;
     }
 
     async getAuction(id) {
-        let auction = await this.auctionHouse.methods.getAuction(id).call({from: this.account});
-        const tokenName = await tokenGeneratorInteractor.getTokenName(auction.tokenId);
-        const tokenDesc = await tokenGeneratorInteractor.getTokenDescription(auction.tokenId);
-        const tokenOwner = await tokenGeneratorInteractor.getTokenOwner(auction.tokenId);
+        const auction = await auctionHouseInteractor.getAuction(id);
+        const token = await tokenGeneratorInteractor.getToken(auction.tokenId);
+        const tokenOwner = await tokenGeneratorInteractor.getTokenOwner(token.id);
+
         return new Auction(
             id,
             auction.beginTimestamp,
             auction.endTimestamp,
             auction.tokenId,
-            tokenName,
-            tokenDesc,
+            token.name,
+            token.description,
             tokenOwner,
             auction.lastBidder,
-            auction.bidAmountInWei,
+            auction.lastBidAmountInWei,
             auction.hasFinalized
         );
     }
 
     async finalize(auctionId) {
-        try {
-            await this.auctionHouse.methods
-                .finalizeAuction(auctionId)
-                .send({from: this.account});
-        }
-        catch(err) {
-            console.log(err);
-        }
+        await auctionHouseInteractor.finalize(auctionId);
     }
 
     async placeBid(auctionId, bidAmount) {
-        try {
-            if (!bidAmount || bidAmount <= 0)
-                throw new Error("Invalid bid amount.");
-
-            const account = this.eth.accounts[0];
-            const auctionHouse = this.eth.auctionHouse;
-            const web3 = this.eth.web3;
-
-            await auctionHouse.methods.placeBid(auctionId, account)
-                .send({ from: account, value: web3.utils.toWei(bidAmount.toString(), "ether") });
-        } catch (error) {
-            console.error("Error placing bid:", error);
-            throw error;
-        }
+        await auctionHouseInteractor.placeBid(auctionId, bidAmount);
     }
 
 }

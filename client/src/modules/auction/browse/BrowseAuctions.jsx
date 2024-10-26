@@ -10,6 +10,7 @@ export function BrowseAuctions() {
     let {state} = useEth();
 
     useEffect(() => {
+        console.log(state);
         const auctionService = new AuctionService(state);
         async function fetchAuctions() {
             try {
@@ -21,7 +22,8 @@ export function BrowseAuctions() {
                 setAuctions([]);
             }
         }
-        fetchAuctions()
+        if(state.auctionHouseAddress)
+            fetchAuctions();
     }, [state]);
 
     return (

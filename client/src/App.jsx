@@ -18,10 +18,10 @@ function App() {
     const {state} = useEth();
 
     useEffect(() => {
-        if(state.tokenGenerator) {
+        if(state && state.tokenGenerator) {
             tokenGeneratorInteractor.initialize(state);
         }
-        if(state.auctionHouse) {
+        if(state && state.auctionHouse) {
             auctionHouseInteractor.initialize(state);
         }
     }, [state]);
@@ -69,13 +69,18 @@ function App() {
     }, []);
 
     const accountConnected = () => {
+        console.log(state);
         return state.accounts && state.accounts.length > 0;
+    }
+
+    const initalizationReady = () => {
+        return tokenGeneratorInteractor.ready() && auctionHouseInteractor.ready();
     }
 
     return (
         <ThemeProvider theme={Theme}>
               <div id="App">
-                    { accountConnected() ? (
+                    { accountConnected() && initalizationReady() ? (
                         <HashRouter>
                             <NavBar/>
                             <div className="centered-page">

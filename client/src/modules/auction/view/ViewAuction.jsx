@@ -12,7 +12,7 @@ export function ViewAuction() {
     const [bidAmount, setBidAmount] = useState('');
 
     useEffect(() => {
-        auctionService.current = new AuctionService();
+        auctionService.current = new AuctionService(state);
         async function fetchAuction() {
             try {
                 const auction = await auctionService.current.getAuction(id);
