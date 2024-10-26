@@ -12,10 +12,13 @@ module.exports = {
   },
   resolve: { extensions }, // Now resolves .ts, .tsx as well
   devServer: {
+    hot: true,            // Enable Hot Module Replacement
+    liveReload: false,     // Disable Live Reload to prevent multiple reloads
     client: {
       overlay: false,
     },
   },
+
   module: {
     rules: [
       {

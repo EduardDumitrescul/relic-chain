@@ -1,6 +1,5 @@
 import {Box, Grid2} from "@mui/material";
 import Headline from "../../../components/Text/Headline";
-import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {AuctionService} from "../../AuctionService";
 import {useEth} from "../../../contexts/EthContext";
@@ -9,9 +8,9 @@ import {AuctionCard} from "./AuctionCard";
 export function BrowseAuctions() {
     let [auctions, setAuctions] = useState([]);
     let {state} = useEth();
-    const auctionService = new AuctionService(state);
 
     useEffect(() => {
+        const auctionService = new AuctionService(state);
         async function fetchAuctions() {
             try {
                 let models = await auctionService.getAuctions();
@@ -23,7 +22,7 @@ export function BrowseAuctions() {
             }
         }
         fetchAuctions()
-    }, []);
+    }, [state]);
 
     return (
         <>
