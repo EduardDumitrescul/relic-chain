@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { RelicModel } from "../../RelicModel";
+import { RelicModel } from "../../../models/RelicModel";
 import Headline from "../../../components/Text/Headline";
 import Body from "../../../components/Text/Body";
 import {Button, Box, TextField} from "@mui/material"; // Import MUI components

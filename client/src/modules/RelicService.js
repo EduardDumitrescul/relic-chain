@@ -1,4 +1,5 @@
-import {RelicModel} from "./RelicModel";
+import {tokenGeneratorInteractor} from "../blockchainInteractors/TokenGeneratorInteractor";
+import {RelicModel} from "../models/RelicModel";
 
 class RelicService {
     #eth = null;
@@ -10,47 +11,26 @@ class RelicService {
     }
 
     async addRelic(model) {
-        try {
-            const tokenGenerator = this.#eth.tokenGenerator;
-            const account = this.#eth.accounts[0];
-            await tokenGenerator.methods.createToken(account, model.name, model.description).send({from: account});
-        }
-        catch (err) {
-            console.log(err)
-        }
+        await tokenGeneratorInteractor.createToken(model);
     }
 
     async getRelicModels() {
-        try {
-            const tokenGenerator = this.#eth.tokenGenerator;
-            const tokenIds = await tokenGenerator.methods.getTokenIds().call( {from: this.#eth.accounts[0]});
-            let models = [];
-            for(let tokenId of tokenIds) {
-                let model = await this.getRelic(tokenId);
-                models.push(model);
-            }
-            return models;
-
-        }
-        catch (err) {
-            console.log(err);
-        }
+        return await tokenGeneratorInteractor.getTokensForCurrentAccount();
     }
 
     async getRelic(tokenId) {
         try {
-            const tokenGenerator = this.#eth.tokenGenerator;
-            let name = await tokenGenerator.methods.name(tokenId).call();
-            let description = await tokenGenerator.methods.description(tokenId).call();
+            const name = await tokenGeneratorInteractor.getTokenName(tokenId);
+            const description = await tokenGeneratorInteractor.getTokenDescription(tokenId);
             const ids = await this.auctionHouse.methods.getAuctionedTokenIds().call({from: this.account});
             const isAuctioned = ids.includes(tokenId);
+            console.log(name);
             return new RelicModel(tokenId, name, description, isAuctioned);
         }
         catch (err) {
-            console.log(err);
+            console.log(`Error while fetching token with id=${tokenId}: ${err}`);
             return new RelicModel();
         }
-
     }
 }
 

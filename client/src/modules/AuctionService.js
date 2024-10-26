@@ -1,15 +1,14 @@
-import {Auction} from "./auction/Auction";
+import {Auction} from "../models/Auction";
+import {tokenGeneratorInteractor} from "../blockchainInteractors/TokenGeneratorInteractor";
 
 export class AuctionService {
     auctionHouse = null;
-    tokenGenerator =  null;
     account = null;
     auctionHouseAddress = null;
 
     constructor(eth) {
         this.eth = eth;
         this.auctionHouse = this.eth.auctionHouse;
-        this.tokenGenerator = this.eth.tokenGenerator;
         this.account = this.eth.accounts[0];
         this.auctionHouseAddress = this.eth.auctionHouseAddress;
         this.tokenGeneratorAddress = this.eth.tokenGeneratorAddress;
@@ -18,12 +17,8 @@ export class AuctionService {
     async createAuction(auction) {
         try {
 
-            await this.tokenGenerator.methods
-                .approve(this.tokenGeneratorAddress, auction.tokenId)
-                .send({from: this.account});
-            // await this.tokenGenerator.methods
-            //     .approve(this.auctionHouseAddress, auction.tokenId)
-            //     .send({from: this.account});
+            await tokenGeneratorInteractor.approve(this.auctionHouseAddress, auction.tokenId);
+            // await tokenGeneratorInteractor.approve(this.tokenGeneratorAddress, auction.tokenId);
             await this.auctionHouse.methods
                 .createAuction(this.account, auction.tokenId, auction.duration())
                 .send({from: this.account});
@@ -52,9 +47,9 @@ export class AuctionService {
 
     async getAuction(id) {
         let auction = await this.auctionHouse.methods.getAuction(id).call({from: this.account});
-        let tokenName = await this.tokenGenerator.methods.name(auction.tokenId).call({from: this.account});
-        let tokenDesc = await this.tokenGenerator.methods.description(auction.tokenId).call({from: this.account});
-        let tokenOwner = await this.tokenGenerator.methods.ownerOf(auction.tokenId).call({form: this.account});
+        const tokenName = await tokenGeneratorInteractor.getTokenName(auction.tokenId);
+        const tokenDesc = await tokenGeneratorInteractor.getTokenDescription(auction.tokenId);
+        const tokenOwner = await tokenGeneratorInteractor.getTokenOwner(auction.tokenId);
         return new Auction(
             id,
             auction.beginTimestamp,

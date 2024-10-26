@@ -10,10 +10,22 @@ import {Relic} from "./modules/relic/Relic";
 import {BrowseAuctions} from "./modules/auction/browse/BrowseAuctions";
 import {ViewAuction} from "./modules/auction/view/ViewAuction";
 import {ThemeProvider} from "@mui/material";
+import {tokenGeneratorInteractor} from "./blockchainInteractors/TokenGeneratorInteractor";
+import {auctionHouseInteractor} from "./blockchainInteractors/AuctionHouseInteractor";
 
 
 function App() {
     const {state} = useEth();
+
+    useEffect(() => {
+        if(state.tokenGenerator) {
+            tokenGeneratorInteractor.initialize(state);
+        }
+        if(state.auctionHouse) {
+            auctionHouseInteractor.initialize(state);
+        }
+    }, [state]);
+
     useEffect(() => {
         const theme = Theme;
         document.documentElement.style.setProperty("--primary-light", theme.palette.primary.light);
@@ -56,11 +68,14 @@ function App() {
         }
     }, []);
 
+    const accountConnected = () => {
+        return state.accounts && state.accounts.length > 0;
+    }
 
     return (
         <ThemeProvider theme={Theme}>
               <div id="App">
-                    {state.accounts && state.accounts.length > 0 ? (
+                    { accountConnected() ? (
                         <HashRouter>
                             <NavBar/>
                             <div className="centered-page">
@@ -69,7 +84,6 @@ function App() {
                                     <Route path="/relic/:id" element={<Relic/>} />
                                     <Route path="/auction" element={<BrowseAuctions/>} />
                                     <Route path="/auction/:id" element={<ViewAuction/>} />
-
                                 </Routes>
                             </div>
                         </HashRouter>
