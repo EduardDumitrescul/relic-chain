@@ -43,7 +43,8 @@ export class AuctionService {
             tokenOwner,
             auction.bidder,
             auction.bidAmount,
-            auction.ended
+            auction.ended,
+            token.imageSource,
         );
     }
 

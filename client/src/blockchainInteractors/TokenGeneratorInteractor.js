@@ -17,7 +17,7 @@ export const tokenGeneratorInteractor = {
         return await handleTransaction(
             this.web3,
             this.tokenGenerator.methods
-                .createToken(this.account, model.name, model.description)
+                .createToken(this.account, model.name, model.description, model.imageSource)
                 .send({from: this.account})
         );
     },
@@ -45,7 +45,9 @@ export const tokenGeneratorInteractor = {
         try {
             const name = await this.tokenGenerator.methods.name(tokenId).call();
             const description = await this.tokenGenerator.methods.description(tokenId).call();
-            return new  RelicModel(tokenId, name, description);
+            const url = await this.tokenGenerator.methods.url(tokenId).call();
+            console.log(url);
+            return new  RelicModel(tokenId, name, description, false, url);
         }
         catch (err) {
             console.log(`Error while fetching token name with id=${tokenId}: ${err}`);
