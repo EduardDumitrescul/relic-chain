@@ -42,7 +42,6 @@ function App() {
     }, []);
 
     const accountConnected = () => {
-        console.log(state);
         return state.accounts && state.accounts.length > 0;
     }
 

@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from "@mui/material";
 import Title from "../../../components/Text/Title";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import RelicService from "../../RelicService";
 import {RelicModel} from "../../../models/RelicModel";
 import {useEth} from "../../../contexts/EthContext";
@@ -8,7 +8,7 @@ import {useNavigate} from "react-router-dom";
 
 function AddRelic() {
     const { state } = useEth();
-    const relicService = new RelicService(state);
+    let relicService = useRef(new RelicService(state));
     const navigate = useNavigate();
 
     const [name, setName] = useState('');
@@ -26,7 +26,7 @@ function AddRelic() {
                 navigate("/");
             }
         })
-    }, [navigate, relicService, state.accounts]);
+    }, [navigate, state.accounts]);
 
     return (
         <Box

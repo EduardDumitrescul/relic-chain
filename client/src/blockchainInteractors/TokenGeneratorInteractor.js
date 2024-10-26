@@ -4,7 +4,6 @@ import {handleTransaction} from "./handleTransaction";
 export const tokenGeneratorInteractor = {
 
     initialize(state) {
-        console.log("init" + state);
         this.web3 = state.web3;
         this.account = state.accounts[0];
         this.tokenGenerator = state.tokenGenerator;
