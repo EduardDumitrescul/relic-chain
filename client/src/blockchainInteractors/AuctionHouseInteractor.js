@@ -79,7 +79,7 @@ export const auctionHouseInteractor = {
     async placeBid(auctionId, bidAmount) {
         try {
             await this.auctionHouse.methods
-                .placeBid(auctionId, this.account)
+                .placeBid(auctionId)
                 .send({
                     from: this.account,
                     value: this.toWei(bidAmount.toString(), "ether")
@@ -107,6 +107,27 @@ export const auctionHouseInteractor = {
             console.error(`Error while checking if token ${tokenId} is auctioned: ${err}`);
             return false;
         }
+    },
+
+    async pendingWithdrawal() {
+        try {
+            return await this.auctionHouse.methods
+                .pendingWithdrawal(this.account)
+                .call({from: this.account});
+        }
+        catch(err) {
+            console.log(`Error while fetching pending withdrawal ${err}`);
+            return 0;
+        }
+    },
+
+    async withdraw() {
+        return handleTransaction(
+            this.web3,
+            this.auctionHouse.methods
+                .withdraw()
+                .send({from: this.account})
+        );
     },
 
     listenForBidPlaced(callback) {

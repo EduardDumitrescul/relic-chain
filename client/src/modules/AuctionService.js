@@ -56,6 +56,14 @@ export class AuctionService {
         await auctionHouseInteractor.placeBid(auctionId, bidAmount);
     }
 
+    async getPendingWithdrawAmount() {
+        return await auctionHouseInteractor.pendingWithdrawal();
+    }
+
+    async withdrawPendingAmount() {
+        return await auctionHouseInteractor.withdraw();
+    }
+
     listenForBidPlaced(callback) {
        auctionHouseInteractor.listenForBidPlaced(callback);
     }

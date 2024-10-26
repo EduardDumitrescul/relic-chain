@@ -1,19 +1,21 @@
 pragma solidity ^0.8.10;
 
-interface TokenGeneratorContract {
+import {Withdrawable} from "./Withdrawable.sol";
+
+interface ITokenGeneratorContract {
     function ownerOf(uint256 tokenId) external view returns(address);
     function transferToken(address from, address to, uint256 tokenId) external;
 }
 
-contract AuctionHouse {
-    TokenGeneratorContract private tokenGeneratorContract;
+contract AuctionHouse is Withdrawable {
+    ITokenGeneratorContract private tokenGeneratorContract;
     uint256 private auctionCounter = 0;
     address payable private auctionHouseOwner;
 
-    event BidPlaced(address);
-    event TokenTransferred(uint256);
-    event MoneyTransferred(uint256);
-    event SendingToken(address);
+    event BidPlaced(address indexed bidder);
+    event TokenTransferred(uint256 tokenId);
+    event MoneyTransferred(uint256 amount);
+    event SendingToken(address to);
 
     struct Auction {
         address payable tokenOwner;
@@ -27,21 +29,23 @@ contract AuctionHouse {
 
     mapping(uint256 => Auction) private auctions;
 
-    constructor(address tokenGeneratorAddress){
-        tokenGeneratorContract = TokenGeneratorContract(tokenGeneratorAddress);
+    constructor(address tokenGeneratorAddress) {
+        tokenGeneratorContract = ITokenGeneratorContract(tokenGeneratorAddress);
         auctionHouseOwner = payable(msg.sender);
     }
 
-    modifier onlyTokenOwner(uint256 tokenId){
+    modifier onlyTokenOwner(uint256 tokenId) {
         require(msg.sender == tokenGeneratorContract.ownerOf(tokenId), "Only the owner of the token can auction it");
         _;
     }
 
     function createAuction(address payable owner, uint256 tokenId, uint256 duration)
-    external onlyTokenOwner (tokenId){
+    external
+    onlyTokenOwner(tokenId)
+    {
         require(duration > 60, "An auction should be active at least one minute");
         require(tokenNotAuctioned(tokenId), "Token is already auctioned");
-        require(msg.sender == owner);
+        require(msg.sender == owner, "Caller is not the owner");
 
         auctions[auctionCounter] = Auction(
             owner,
@@ -52,13 +56,12 @@ contract AuctionHouse {
             0,
             false
         );
-        auctionCounter ++;
+        auctionCounter++;
     }
 
-    function tokenNotAuctioned(uint256 tokenId)
-    internal view returns (bool){
-        for(uint256 i = 0; i < auctionCounter; i ++) {
-            if(auctions[i].tokenId == tokenId && auctions[i].hasFinalized == false) {
+    function tokenNotAuctioned(uint256 tokenId) internal view returns (bool) {
+        for (uint256 i = 0; i < auctionCounter; i++) {
+            if (auctions[i].tokenId == tokenId && !auctions[i].hasFinalized) {
                 return false;
             }
         }
@@ -70,20 +73,28 @@ contract AuctionHouse {
         _;
     }
 
-    function placeBid(uint256 auctionId, address payable bidder)
-    external payable onlyNotTokenOwner(auctionId) {
+    function placeBid(uint256 auctionId) external payable onlyNotTokenOwner(auctionId) {
         require(msg.value > auctions[auctionId].lastBidAmountInWei, "Bid amount must be higher than last bid");
         require(auctions[auctionId].beginTimestamp <= block.timestamp && block.timestamp < auctions[auctionId].endTimestamp, "Auction must be in progress");
 
         if (auctions[auctionId].lastBidder != auctions[auctionId].tokenOwner) {
             // Refund the previous bidder
-            auctions[auctionId].lastBidder.transfer(auctions[auctionId].lastBidAmountInWei);
+            addPendingWithdrawal(auctions[auctionId].lastBidder, auctions[auctionId].lastBidAmountInWei);
         }
 
-        auctions[auctionId].lastBidder = bidder;
+        auctions[auctionId].lastBidder = payable(msg.sender);
         auctions[auctionId].lastBidAmountInWei = msg.value;
 
-        emit BidPlaced(bidder);
+        emit BidPlaced(msg.sender);
+    }
+
+    function withdraw() external virtual override {
+        uint256 amount = pendingWithdrawal(msg.sender);
+        require(amount > 0, "No funds to withdraw");
+
+        resetAmount(msg.sender);
+        payable(msg.sender).transfer(amount);
+        emit MoneyTransferred(amount);
     }
 
     modifier tokenTransferred(uint256 auctionId){
@@ -94,11 +105,10 @@ contract AuctionHouse {
     function finalizeAuction(uint256 auctionId)
     public tokenTransferred(auctionId) {
         require(auctions[auctionId].tokenOwner == msg.sender, "Only the token owner can finalize auction");
-        require(auctionId < auctionCounter, "Auction exists");
-        require(auctions[auctionId].hasFinalized == false, "Auction is in progress");
-        require(msg.sender == tokenGeneratorContract.ownerOf(auctions[auctionId].tokenId), "Token owner is calling");
+        require(auctionId < auctionCounter, "Auction does not exist");
+        require(!auctions[auctionId].hasFinalized, "Auction has already been finalized");
 
-        address bidder = auctions[auctionId].lastBidder;
+        address payable bidder = auctions[auctionId].lastBidder;
         uint256 bidAmount = auctions[auctionId].lastBidAmountInWei;
         address payable owner = auctions[auctionId].tokenOwner;
         uint256 tokenId = auctions[auctionId].tokenId;
