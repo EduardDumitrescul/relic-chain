@@ -1,0 +1,583 @@
+{
+  "configuration" : {
+    "scope" : "SoftwareSystem"
+  },
+  "description" : "Description",
+  "documentation" : { },
+  "id" : 1,
+  "lastModifiedAgent" : "structurizr-ui",
+  "lastModifiedDate" : "2024-10-22T05:30:06Z",
+  "model" : {
+    "people" : [ {
+      "description" : "A user who owns relics",
+      "id" : "1",
+      "location" : "Unspecified",
+      "name" : "RelicOwner",
+      "properties" : {
+        "structurizr.dsl.identifier" : "relicowner"
+      },
+      "relationships" : [ {
+        "description" : "Manages relics using",
+        "destinationId" : "4",
+        "id" : "14",
+        "properties" : {
+          "structurizr.dsl.identifier" : "ff76d975-6fdc-40d1-9e5d-5ad6737107b7"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Manages relics using",
+        "destinationId" : "3",
+        "id" : "15",
+        "linkedRelationshipId" : "14",
+        "sourceId" : "1"
+      }, {
+        "description" : "Connects their wallet to",
+        "destinationId" : "12",
+        "id" : "20",
+        "properties" : {
+          "structurizr.dsl.identifier" : "780f3710-8261-4f93-9142-8fb0420b20ce"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Manages owned relics using",
+        "destinationId" : "6",
+        "id" : "28",
+        "properties" : {
+          "structurizr.dsl.identifier" : "26089ebb-b0a6-4e57-8be4-f90097528f42"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Authenticates a relic using",
+        "destinationId" : "9",
+        "id" : "29",
+        "properties" : {
+          "structurizr.dsl.identifier" : "66721a36-323f-4ada-8c26-622dd207d241"
+        },
+        "sourceId" : "1",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    }, {
+      "description" : "A user who wants to buy a relic",
+      "id" : "2",
+      "location" : "Unspecified",
+      "name" : "Relic Buyer",
+      "properties" : {
+        "structurizr.dsl.identifier" : "relicbuyer"
+      },
+      "relationships" : [ {
+        "description" : "Browses relics and participates in auctions via",
+        "destinationId" : "4",
+        "id" : "16",
+        "properties" : {
+          "structurizr.dsl.identifier" : "cd0dfdf2-df7a-4271-8f29-6c4c8d15de64"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Browses relics and participates in auctions via",
+        "destinationId" : "3",
+        "id" : "17",
+        "linkedRelationshipId" : "16",
+        "sourceId" : "2"
+      }, {
+        "description" : "Connects their wallet to",
+        "destinationId" : "12",
+        "id" : "21",
+        "properties" : {
+          "structurizr.dsl.identifier" : "6ab74602-48ee-4c60-9d03-cf027ea4a212"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Views auctioned relics using",
+        "destinationId" : "7",
+        "id" : "30",
+        "properties" : {
+          "structurizr.dsl.identifier" : "e9f0190c-d4a0-4628-8379-e996c2b000ef"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Bids for a relic using",
+        "destinationId" : "8",
+        "id" : "31",
+        "properties" : {
+          "structurizr.dsl.identifier" : "227b5a2a-7518-4858-8f8f-f851f53e50e4"
+        },
+        "sourceId" : "2",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Person"
+    } ],
+    "softwareSystems" : [ {
+      "containers" : [ {
+        "components" : [ {
+          "description" : "Notifies users to connect their wallets to MetaMask",
+          "documentation" : { },
+          "id" : "5",
+          "name" : "ConnectAccountPage",
+          "properties" : {
+            "structurizr.dsl.identifier" : "relicchain.webapplication.connectaccountpage"
+          },
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows users to manage their relics",
+          "documentation" : { },
+          "id" : "6",
+          "name" : "InventoryModule",
+          "properties" : {
+            "structurizr.dsl.identifier" : "relicchain.webapplication.inventorymodule"
+          },
+          "relationships" : [ {
+            "description" : "Makes calls to",
+            "destinationId" : "10",
+            "id" : "32",
+            "properties" : {
+              "structurizr.dsl.identifier" : "b5e9cd38-cef9-407a-abaf-bafdedb63c0a"
+            },
+            "sourceId" : "6",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows users to browse auctioned relics",
+          "documentation" : { },
+          "id" : "7",
+          "name" : "BrowseModule",
+          "properties" : {
+            "structurizr.dsl.identifier" : "relicchain.webapplication.browsemodule"
+          },
+          "relationships" : [ {
+            "description" : "Makes calls to",
+            "destinationId" : "10",
+            "id" : "34",
+            "properties" : {
+              "structurizr.dsl.identifier" : "90026275-a24c-47b0-80b7-7eb0a8b40b7e"
+            },
+            "sourceId" : "7",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows user to bid for a relic",
+          "documentation" : { },
+          "id" : "8",
+          "name" : "AuctionModule",
+          "properties" : {
+            "structurizr.dsl.identifier" : "relicchain.webapplication.auctionmodule"
+          },
+          "relationships" : [ {
+            "description" : "Makes calls to",
+            "destinationId" : "10",
+            "id" : "35",
+            "properties" : {
+              "structurizr.dsl.identifier" : "3e546450-6ad2-4fff-8daa-bd83498b7dd5"
+            },
+            "sourceId" : "8",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        }, {
+          "description" : "Allows user the pay for authentication services for a relic",
+          "documentation" : { },
+          "id" : "9",
+          "name" : "AuthenticateModule",
+          "properties" : {
+            "structurizr.dsl.identifier" : "relicchain.webapplication.authenticationmodule"
+          },
+          "relationships" : [ {
+            "description" : "Makes calls to",
+            "destinationId" : "10",
+            "id" : "33",
+            "properties" : {
+              "structurizr.dsl.identifier" : "e3a6530f-247f-4043-832f-ac81086e8dcd"
+            },
+            "sourceId" : "9",
+            "tags" : "Relationship"
+          } ],
+          "tags" : "Element,Component"
+        } ],
+        "description" : "A web-based front-end application for interacting with the blockchain.",
+        "documentation" : { },
+        "id" : "4",
+        "name" : "Web Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "relicchain.webapplication"
+        },
+        "relationships" : [ {
+          "description" : "Submits relic data and auction bids to",
+          "destinationId" : "10",
+          "id" : "23",
+          "properties" : {
+            "structurizr.dsl.identifier" : "28e9c99f-02cd-450d-b7e9-e0f84f6ba87b"
+          },
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Connects to user's wallet via",
+          "destinationId" : "12",
+          "id" : "24",
+          "properties" : {
+            "structurizr.dsl.identifier" : "afd96fea-66af-4c61-95c8-0aa53d679ba1"
+          },
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        }, {
+          "description" : "Stores and retrieves data via",
+          "destinationId" : "13",
+          "id" : "26",
+          "properties" : {
+            "structurizr.dsl.identifier" : "bacdf20e-6299-41bb-ae1c-6c08fb7f5be5"
+          },
+          "sourceId" : "4",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container",
+        "technology" : "React, JavaScript"
+      }, {
+        "description" : "Add functionality to the blockchain",
+        "documentation" : { },
+        "id" : "10",
+        "name" : "SmartContracts",
+        "properties" : {
+          "structurizr.dsl.identifier" : "relicchain.smartcontracts"
+        },
+        "relationships" : [ {
+          "description" : "Deployed on",
+          "destinationId" : "11",
+          "id" : "22",
+          "properties" : {
+            "structurizr.dsl.identifier" : "c842308d-273f-44b7-8587-12b9c63c2eb0"
+          },
+          "sourceId" : "10",
+          "tags" : "Relationship"
+        } ],
+        "tags" : "Element,Container"
+      } ],
+      "description" : "Allows users to keep track of relics, authenticate or auction them.",
+      "documentation" : { },
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "RelicChain",
+      "properties" : {
+        "structurizr.dsl.identifier" : "relicchain"
+      },
+      "relationships" : [ {
+        "description" : "Makes calls to",
+        "destinationId" : "11",
+        "id" : "18",
+        "properties" : {
+          "structurizr.dsl.identifier" : "8a3e706f-c4c6-47d3-864a-bc3720d79855"
+        },
+        "sourceId" : "3",
+        "tags" : "Relationship"
+      }, {
+        "description" : "Connects to user's wallet via",
+        "destinationId" : "12",
+        "id" : "25",
+        "linkedRelationshipId" : "24",
+        "sourceId" : "3"
+      }, {
+        "description" : "Stores and retrieves data via",
+        "destinationId" : "13",
+        "id" : "27",
+        "linkedRelationshipId" : "26",
+        "sourceId" : "3"
+      } ],
+      "tags" : "Element,Software System"
+    }, {
+      "description" : "A decentralized network where relic ownership and auction details are stored as NFTs.",
+      "documentation" : { },
+      "id" : "11",
+      "location" : "Unspecified",
+      "name" : "Blockchain",
+      "properties" : {
+        "structurizr.dsl.identifier" : "blockchain"
+      },
+      "tags" : "Element,Software System,Blockchain"
+    }, {
+      "description" : "Stores users' crypto wallets and facilitates blockchain transactions.",
+      "documentation" : { },
+      "id" : "12",
+      "location" : "Unspecified",
+      "name" : "MetaMask",
+      "properties" : {
+        "structurizr.dsl.identifier" : "metamask"
+      },
+      "relationships" : [ {
+        "description" : "Signs and submits transactions to",
+        "destinationId" : "11",
+        "id" : "19",
+        "properties" : {
+          "structurizr.dsl.identifier" : "01ddf8e8-6b72-4377-a53b-485824cdf02b"
+        },
+        "sourceId" : "12",
+        "tags" : "Relationship"
+      } ],
+      "tags" : "Element,Software System,metaMask"
+    }, {
+      "description" : "Stores data about relics",
+      "documentation" : { },
+      "id" : "13",
+      "location" : "Unspecified",
+      "name" : "Ipfs",
+      "properties" : {
+        "structurizr.dsl.identifier" : "ipfs"
+      },
+      "tags" : "Element,Software System,Ipfs"
+    } ]
+  },
+  "name" : "Name",
+  "properties" : {
+    "structurizr.dsl" : "d29ya3NwYWNlICJOYW1lIiAiRGVzY3JpcHRpb24iIHsKCiAgICAhaWRlbnRpZmllcnMgaGllcmFyY2hpY2FsCgogICAgbW9kZWwgewogICAgICAgIHJlbGljT3duZXIgPSBwZXJzb24gIlJlbGljT3duZXIiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIkEgdXNlciB3aG8gb3ducyByZWxpY3MiCiAgICAgICAgfQogICAgICAgIHJlbGljQnV5ZXIgPSBwZXJzb24gIlJlbGljIEJ1eWVyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBIHVzZXIgd2hvIHdhbnRzIHRvIGJ1eSBhIHJlbGljIgogICAgICAgIH0KCiAgICAgICAgcmVsaWNDaGFpbiA9IHNvZnR3YXJlc3lzdGVtICJSZWxpY0NoYWluIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlcnMgdG8ga2VlcCB0cmFjayBvZiByZWxpY3MsIGF1dGhlbnRpY2F0ZSBvciBhdWN0aW9uIHRoZW0uIgoKICAgICAgICAgICAgd2ViQXBwbGljYXRpb24gPSBjb250YWluZXIgIldlYiBBcHBsaWNhdGlvbiIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkEgd2ViLWJhc2VkIGZyb250LWVuZCBhcHBsaWNhdGlvbiBmb3IgaW50ZXJhY3Rpbmcgd2l0aCB0aGUgYmxvY2tjaGFpbi4iCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJSZWFjdCwgSmF2YVNjcmlwdCIKCiAgICAgICAgICAgICAgICBjb25uZWN0QWNjb3VudFBhZ2UgPSBjb21wb25lbnQgIkNvbm5lY3RBY2NvdW50UGFnZSIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJOb3RpZmllcyB1c2VycyB0byBjb25uZWN0IHRoZWlyIHdhbGxldHMgdG8gTWV0YU1hc2siCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgaW52ZW50b3J5TW9kdWxlID0gY29tcG9uZW50ICJJbnZlbnRvcnlNb2R1bGUiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHVzZXJzIHRvIG1hbmFnZSB0aGVpciByZWxpY3MiCiAgICAgICAgICAgICAgICB9CgogICAgICAgICAgICAgICAgYnJvd3NlTW9kdWxlID0gY29tcG9uZW50ICJCcm93c2VNb2R1bGUiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHVzZXJzIHRvIGJyb3dzZSBhdWN0aW9uZWQgcmVsaWNzIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGF1Y3Rpb25Nb2R1bGUgPSBjb21wb25lbnQgIkF1Y3Rpb25Nb2R1bGUiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHVzZXIgdG8gYmlkIGZvciBhIHJlbGljIgogICAgICAgICAgICAgICAgfQoKICAgICAgICAgICAgICAgIGF1dGhlbnRpY2F0aW9uTW9kdWxlID0gY29tcG9uZW50ICJBdXRoZW50aWNhdGVNb2R1bGUiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIHVzZXIgdGhlIHBheSBmb3IgYXV0aGVudGljYXRpb24gc2VydmljZXMgZm9yIGEgcmVsaWMiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KCiAgICAgICAgICAgIHNtYXJ0Q29udHJhY3RzID0gY29udGFpbmVyICJTbWFydENvbnRyYWN0cyIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIkFkZCBmdW5jdGlvbmFsaXR5IHRvIHRoZSBibG9ja2NoYWluIgogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICBibG9ja2NoYWluID0gc29mdHdhcmVTeXN0ZW0gIkJsb2NrY2hhaW4iIHsKICAgICAgICAgICAgdGFnICJCbG9ja2NoYWluIgogICAgICAgICAgICBkZXNjcmlwdGlvbiAiQSBkZWNlbnRyYWxpemVkIG5ldHdvcmsgd2hlcmUgcmVsaWMgb3duZXJzaGlwIGFuZCBhdWN0aW9uIGRldGFpbHMgYXJlIHN0b3JlZCBhcyBORlRzLiIgCiAgICAgICAgfQoKICAgICAgICBtZXRhTWFzayA9IHNvZnR3YXJlc3lzdGVtICJNZXRhTWFzayIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiU3RvcmVzIHVzZXJzJyBjcnlwdG8gd2FsbGV0cyBhbmQgZmFjaWxpdGF0ZXMgYmxvY2tjaGFpbiB0cmFuc2FjdGlvbnMuIgogICAgICAgICAgICB0YWcgIm1ldGFNYXNrIgogICAgICAgIH0KCiAgICAgICAgaXBmcyA9IHNvZnR3YXJlU3lzdGVtICJJcGZzIiB7CiAgICAgICAgICAgIHRhZyAiSXBmcyIKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlN0b3JlcyBkYXRhIGFib3V0IHJlbGljcyIKICAgICAgICB9CgogICAgICAgIHJlbGljT3duZXIgLT4gcmVsaWNDaGFpbi53ZWJBcHBsaWNhdGlvbiAiTWFuYWdlcyByZWxpY3MgdXNpbmciCiAgICAgICAgcmVsaWNCdXllciAtPiByZWxpY0NoYWluLndlYkFwcGxpY2F0aW9uICJCcm93c2VzIHJlbGljcyBhbmQgcGFydGljaXBhdGVzIGluIGF1Y3Rpb25zIHZpYSIKICAgICAgICByZWxpY0NoYWluIC0+IGJsb2NrY2hhaW4gIk1ha2VzIGNhbGxzIHRvIgogICAgICAgIG1ldGFNYXNrIC0+IGJsb2NrY2hhaW4gIlNpZ25zIGFuZCBzdWJtaXRzIHRyYW5zYWN0aW9ucyB0byIKICAgICAgICAKICAgICAgICByZWxpY093bmVyIC0+IG1ldGFNYXNrICJDb25uZWN0cyB0aGVpciB3YWxsZXQgdG8iCiAgICAgICAgcmVsaWNCdXllciAtPiBtZXRhTWFzayAiQ29ubmVjdHMgdGhlaXIgd2FsbGV0IHRvIgoKICAgICAgICAgICAgcmVsaWNDaGFpbi5zbWFydENvbnRyYWN0cyAtPiBibG9ja2NoYWluICJEZXBsb3llZCBvbiIKICAgICAgICByZWxpY0NoYWluLndlYkFwcGxpY2F0aW9uIC0+IHJlbGljQ2hhaW4uc21hcnRDb250cmFjdHMgIlN1Ym1pdHMgcmVsaWMgZGF0YSBhbmQgYXVjdGlvbiBiaWRzIHRvIgogICAgICAgIHJlbGljQ2hhaW4ud2ViQXBwbGljYXRpb24gLT4gbWV0YU1hc2sgIkNvbm5lY3RzIHRvIHVzZXIncyB3YWxsZXQgdmlhIgogICAgICAgIHJlbGljQ2hhaW4ud2ViQXBwbGljYXRpb24gLT4gaXBmcyAiU3RvcmVzIGFuZCByZXRyaWV2ZXMgZGF0YSB2aWEiCgogICAgICAgIHJlbGljT3duZXIgLT4gcmVsaWNDaGFpbi53ZWJBcHBsaWNhdGlvbi5pbnZlbnRvcnlNb2R1bGUgIk1hbmFnZXMgb3duZWQgcmVsaWNzIHVzaW5nIgogICAgICAgIHJlbGljT3duZXIgLT4gcmVsaWNDaGFpbi53ZWJBcHBsaWNhdGlvbi5hdXRoZW50aWNhdGlvbk1vZHVsZSAiQXV0aGVudGljYXRlcyBhIHJlbGljIHVzaW5nIgogICAgICAgIHJlbGljQnV5ZXIgLT4gcmVsaWNDaGFpbi53ZWJBcHBsaWNhdGlvbi5icm93c2VNb2R1bGUgIlZpZXdzIGF1Y3Rpb25lZCByZWxpY3MgdXNpbmciCiAgICAgICAgcmVsaWNCdXllciAtPiByZWxpY0NoYWluLndlYkFwcGxpY2F0aW9uLmF1Y3Rpb25Nb2R1bGUgIkJpZHMgZm9yIGEgcmVsaWMgdXNpbmciCgogICAgICAgIHJlbGljQ2hhaW4ud2ViQXBwbGljYXRpb24uaW52ZW50b3J5TW9kdWxlIC0+IHJlbGljQ2hhaW4uc21hcnRDb250cmFjdHMgIk1ha2VzIGNhbGxzIHRvIgogICAgICAgIHJlbGljQ2hhaW4ud2ViQXBwbGljYXRpb24uYXV0aGVudGljYXRpb25Nb2R1bGUgLT4gcmVsaWNDaGFpbi5zbWFydENvbnRyYWN0cyAiTWFrZXMgY2FsbHMgdG8iCiAgICAgICAgcmVsaWNDaGFpbi53ZWJBcHBsaWNhdGlvbi5icm93c2VNb2R1bGUgLT4gcmVsaWNDaGFpbi5zbWFydENvbnRyYWN0cyAiTWFrZXMgY2FsbHMgdG8iCiAgICAgICAgcmVsaWNDaGFpbi53ZWJBcHBsaWNhdGlvbi5hdWN0aW9uTW9kdWxlIC0+IHJlbGljQ2hhaW4uc21hcnRDb250cmFjdHMgIk1ha2VzIGNhbGxzIHRvIgogICAgfQoKICAgIHZpZXdzIHsKICAgICAgICBzeXN0ZW1Db250ZXh0IHJlbGljQ2hhaW4gInN5c3RlbUNvbnRleHQiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgdGIKICAgICAgICB9CgogICAgICAgIGNvbnRhaW5lciByZWxpY0NoYWluICJSZWxpY0NoYWluIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBleGNsdWRlICJyZWxpY0J1eWVyLT5tZXRhTWFzayIKICAgICAgICAgICAgZXhjbHVkZSAicmVsaWNPd25lci0+bWV0YU1hc2siCiAgICAgICAgICAgIGF1dG9sYXlvdXQgdGIKICAgICAgICB9CgogICAgICAgIGNvbXBvbmVudCByZWxpY0NoYWluLndlYkFwcGxpY2F0aW9uICJXZWJBcHBsaWNhdGlvbiIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCB0YgogICAgICAgIH0KCiAgICAgICAgc3R5bGVzIHsKICAgICAgICAgICAgZWxlbWVudCAiRWxlbWVudCIgewogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlBlcnNvbiIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjMTExMUZGCiAgICAgICAgICAgICAgICBzaGFwZSBwZXJzb24KICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJTb2Z0d2FyZSBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzU1NTVGRgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkNvbnRhaW5lciIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNzc3N0ZGCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAibWV0YU1hc2siIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzMzMzMzMwogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIklwZnMiIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzMzMzMzMwogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkJsb2NrY2hhaW4iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzMzMzMzMwogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIkNvbXBvbmVudCIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNTU1NUZGCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9CgogICAgY29uZmlndXJhdGlvbiB7CiAgICAgICAgc2NvcGUgc29mdHdhcmVzeXN0ZW0KICAgIH0KfQ=="
+  },
+  "views" : {
+    "componentViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "containerId" : "4",
+      "dimensions" : {
+        "height" : 2000,
+        "width" : 3890
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 620,
+        "y" : 199
+      }, {
+        "id" : "2",
+        "x" : 2120,
+        "y" : 199
+      }, {
+        "id" : "5",
+        "x" : 3220,
+        "y" : 899
+      }, {
+        "id" : "6",
+        "x" : 220,
+        "y" : 899
+      }, {
+        "id" : "7",
+        "x" : 1720,
+        "y" : 899
+      }, {
+        "id" : "8",
+        "x" : 2470,
+        "y" : 899
+      }, {
+        "id" : "9",
+        "x" : 970,
+        "y" : 899
+      }, {
+        "id" : "10",
+        "x" : 1345,
+        "y" : 1499
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "WebApplication",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "28"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32",
+        "vertices" : [ {
+          "x" : 820,
+          "y" : 1303
+        } ]
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35",
+        "vertices" : [ {
+          "x" : 2320,
+          "y" : 1303
+        } ]
+      } ]
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "systemContext",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "color" : "#ffffff",
+          "tag" : "Element"
+        }, {
+          "background" : "#1111ff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#5555ff",
+          "tag" : "Software System"
+        }, {
+          "background" : "#7777ff",
+          "tag" : "Container"
+        }, {
+          "background" : "#333333",
+          "tag" : "metaMask"
+        }, {
+          "background" : "#333333",
+          "tag" : "Ipfs"
+        }, {
+          "background" : "#333333",
+          "tag" : "Blockchain"
+        }, {
+          "background" : "#5555ff",
+          "tag" : "Component"
+        } ]
+      },
+      "terminology" : { }
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "dimensions" : {
+        "height" : 2600,
+        "width" : 2675
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 199,
+        "y" : 199
+      }, {
+        "id" : "2",
+        "x" : 899,
+        "y" : 199
+      }, {
+        "id" : "4",
+        "x" : 524,
+        "y" : 899
+      }, {
+        "id" : "10",
+        "x" : 524,
+        "y" : 1499
+      }, {
+        "id" : "11",
+        "x" : 899,
+        "y" : 2099
+      }, {
+        "id" : "12",
+        "x" : 1274,
+        "y" : 1499
+      }, {
+        "id" : "13",
+        "x" : 2024,
+        "y" : 1499
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "RelicChain",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "14"
+      }, {
+        "id" : "16"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "26"
+      } ],
+      "softwareSystemId" : "3"
+    } ],
+    "systemContextViews" : [ {
+      "automaticLayout" : {
+        "applied" : true,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "dimensions" : {
+        "height" : 2600,
+        "width" : 2500
+      },
+      "elements" : [ {
+        "id" : "1",
+        "x" : 200,
+        "y" : 199
+      }, {
+        "id" : "2",
+        "x" : 1046,
+        "y" : 199
+      }, {
+        "id" : "3",
+        "x" : 1171,
+        "y" : 899
+      }, {
+        "id" : "11",
+        "x" : 829,
+        "y" : 2099
+      }, {
+        "id" : "12",
+        "x" : 492,
+        "y" : 1499
+      }, {
+        "id" : "13",
+        "x" : 1850,
+        "y" : 1499
+      } ],
+      "enterpriseBoundaryVisible" : true,
+      "key" : "systemContext",
+      "order" : 1,
+      "relationships" : [ {
+        "id" : "15"
+      }, {
+        "id" : "17"
+      }, {
+        "id" : "18"
+      }, {
+        "id" : "19"
+      }, {
+        "id" : "20",
+        "vertices" : [ {
+          "x" : 488,
+          "y" : 1199
+        } ]
+      }, {
+        "id" : "21",
+        "vertices" : [ {
+          "x" : 1021,
+          "y" : 899
+        } ]
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "27"
+      } ],
+      "softwareSystemId" : "3"
+    } ]
+  }
+}
