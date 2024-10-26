@@ -41,33 +41,6 @@ function App() {
         document.documentElement.style.setProperty('--spacing-4', theme.spacing(4));
     }, []);
 
-    useEffect(() => {
-        if (window.ethereum) {
-            const handleConnect = () => {
-                console.log("Connected");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 100);
-            };
-            const handleDisconnect = () => {
-                console.log("Disconnected");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 100);
-            };
-
-            // Add event listeners
-            window.ethereum.on('connect', handleConnect);
-            window.ethereum.on('disconnect', handleDisconnect);
-
-            // Cleanup function to remove event listeners
-            return () => {
-                window.ethereum.removeListener('connect', handleConnect);
-                window.ethereum.removeListener('disconnect', handleDisconnect);
-            };
-        }
-    }, []);
-
     const accountConnected = () => {
         console.log(state);
         return state.accounts && state.accounts.length > 0;
