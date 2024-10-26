@@ -8,10 +8,10 @@ import RelicService from "../../RelicService";
 
 function InventoryPage() {
     const {state} = useEth();
-    const relicService = new RelicService(state);
     const [relics, setRelics] = useState([]);
 
     useEffect(() => {
+        const relicService = new RelicService(state);
         async function fetchRelics() {
             try {
                 let models = await relicService.getRelicModels();
@@ -23,7 +23,7 @@ function InventoryPage() {
             }
         }
         fetchRelics()
-    }, []);
+    }, [state]);
 
     return (
         <>

@@ -17,13 +17,11 @@ export function ViewRelic() {
     const {id} = useParams();
     const {state} = useEth();
     const auctionService = new AuctionService(state);
-    const relicService = new RelicService(state);
 
-    // State to hold the auction start and end times
-    // const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(dayjs());
 
     useEffect(() => {
+        const relicService = new RelicService(state);
         async function fetchRelicModel() {
             try {
                 let relic = await relicService.getRelic(id)
@@ -35,7 +33,7 @@ export function ViewRelic() {
             }
         }
         fetchRelicModel();
-    }, []);
+    }, [id, state]);
 
     // Function to handle adding the relic to auction
     const handleAddToAuction = async () => {

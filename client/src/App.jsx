@@ -1,15 +1,15 @@
 import useEth from "./contexts/EthContext/useEth";
 import Intro from "./modules/connectAccount/";
-import {ThemeProvider, useTheme} from "@mui/material";
 import {Theme} from "./Theme";
 import React, {useEffect} from "react";
-import {HashRouter, createBrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar/NavBar";
 import InventoryPage from "./modules/relic/inventory/InventoryPage";
 import "./styles.css";
 import {Relic} from "./modules/relic/Relic";
 import {BrowseAuctions} from "./modules/auction/browse/BrowseAuctions";
 import {ViewAuction} from "./modules/auction/view/ViewAuction";
+import {ThemeProvider} from "@mui/material";
 
 
 function App() {

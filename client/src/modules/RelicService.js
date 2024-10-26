@@ -24,7 +24,6 @@ class RelicService {
         try {
             const tokenGenerator = this.#eth.tokenGenerator;
             const tokenIds = await tokenGenerator.methods.getTokenIds().call( {from: this.#eth.accounts[0]});
-            console.log(tokenIds);
             let models = [];
             for(let tokenId of tokenIds) {
                 let model = await this.getRelic(tokenId);

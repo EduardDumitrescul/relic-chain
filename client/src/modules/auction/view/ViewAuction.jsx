@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import { useParams } from 'react-router-dom';
 import { Typography, Box, TextField, Button, Card, CardMedia, CardContent, CardActions } from '@mui/material';
 import {useEth} from "../../../contexts/EthContext";
@@ -7,14 +7,15 @@ import {AuctionService} from "../../AuctionService";
 export function ViewAuction() {
     const { id } = useParams();
     const {state} = useEth();
-    const auctionService = new AuctionService(state);
+    const auctionService = useRef(new AuctionService(state));
     const [auction, setAuction] = useState(null);
     const [bidAmount, setBidAmount] = useState('');
 
     useEffect(() => {
+        auctionService.current = new AuctionService();
         async function fetchAuction() {
             try {
-                const auction = await auctionService.getAuction(id);
+                const auction = await auctionService.current.getAuction(id);
                 setAuction(auction);
             }
             catch (err) {
@@ -22,13 +23,12 @@ export function ViewAuction() {
             }
         }
         fetchAuction();
-    }, [id]);
+    }, [state, id]);
 
     const currentAccountIsOwner = () => {
         return auction.tokenOwner === state.accounts[0]
     }
     const auctionInProgress = () => {
-        console.log(auction.beginTimestamp + "   " + Date.now() / 1000);
         return auction.beginTimestamp < Date.now() / 1000 && Date.now() / 1000 < auction.endTimestamp;
     }
 
@@ -40,7 +40,7 @@ export function ViewAuction() {
             return;
         }
 
-        await auctionService.placeBid(auction.id, bidAmount);
+        await auctionService.current.placeBid(auction.id, bidAmount);
     };
 
     if (!auction) return <Typography>Loading auction details...</Typography>;

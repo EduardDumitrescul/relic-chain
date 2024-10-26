@@ -21,8 +21,6 @@ export function AuctionCard(props) {
     }
 
     const showFinalizeButton = () => {
-        console.log(auction.owner);
-        console.log(state.accounts[0]);
         return auction.endTimestamp < dayjs().unix() && auction.tokenOwner === state.accounts[0];
     }
 

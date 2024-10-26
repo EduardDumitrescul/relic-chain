@@ -1,4 +1,4 @@
-import { Typography, useTheme } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useEth } from "../../contexts/EthContext";
 import styles from './NavBar.module.css';

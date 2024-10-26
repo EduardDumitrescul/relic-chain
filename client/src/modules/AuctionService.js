@@ -31,7 +31,6 @@ export class AuctionService {
         catch(err) {
             console.log(err);
         }
-        // await this.getAuctionIds();
     }
 
     async getAuctions() {
@@ -52,8 +51,6 @@ export class AuctionService {
     }
 
     async getAuction(id) {
-        const web3 =this.eth.web3;
-
         let auction = await this.auctionHouse.methods.getAuction(id).call({from: this.account});
         let tokenName = await this.tokenGenerator.methods.name(auction.tokenId).call({from: this.account});
         let tokenDesc = await this.tokenGenerator.methods.description(auction.tokenId).call({from: this.account});
