@@ -12,7 +12,7 @@ export function ViewAuction() {
     const [bidAmount, setBidAmount] = useState('');
 
     useEffect(() => {
-        auctionService.current = new AuctionService();
+        auctionService.current = new AuctionService(state);
         async function fetchAuction() {
             try {
                 const auction = await auctionService.current.getAuction(id);
@@ -24,6 +24,14 @@ export function ViewAuction() {
         }
         fetchAuction();
     }, [state, id]);
+
+    useEffect(() => {
+        auctionService.current.listenForBidPlaced((event) => {
+            if(event[0] === state.accounts[0]) {
+                window.location.reload();
+            }
+        })
+    }, [state.accounts]);
 
     const currentAccountIsOwner = () => {
         return auction.tokenOwner === state.accounts[0]

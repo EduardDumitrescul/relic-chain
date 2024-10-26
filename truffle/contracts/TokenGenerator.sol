@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.10;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
@@ -6,28 +5,26 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 contract TokenGenerator is ERC721{
     uint256 public tokenCount = 0;
 
-    event TokenCreated(uint256 value);
+    event TokenCreated(uint256 id, string name, address owner);
 
     mapping(address => uint256[]) private tokens;
     mapping(uint256 => string) private names;
     mapping(uint256 => string) private descriptions;
 
     constructor()
-    ERC721("RelicToken", "RTK") {
+    ERC721("RelicToken", "RTK") {}
 
-    }
-
-    function createToken(address owner, string memory name, string memory description) public  {
+    function createToken(address owner, string memory name, string memory description) external  {
         tokenCount++;
         uint256 newTokenId = tokenCount;
         _safeMint(owner, newTokenId);
         tokens[owner].push(newTokenId);
         names[newTokenId] = name;
         descriptions[newTokenId] = description;
-        emit TokenCreated(newTokenId);
+        emit TokenCreated(newTokenId, name, owner);
     }
 
-    function transferToken(address from, address to, uint256 tokenId) public {
+    function transferToken(address from, address to, uint256 tokenId) external {
         safeTransferFrom(from, to, tokenId);
         for(uint256 i = 0; i < tokens[from].length; i ++) {
             if(tokens[from][i] == tokenId) {

@@ -10,10 +10,22 @@ import {Relic} from "./modules/relic/Relic";
 import {BrowseAuctions} from "./modules/auction/browse/BrowseAuctions";
 import {ViewAuction} from "./modules/auction/view/ViewAuction";
 import {ThemeProvider} from "@mui/material";
+import {tokenGeneratorInteractor} from "./blockchainInteractors/TokenGeneratorInteractor";
+import {auctionHouseInteractor} from "./blockchainInteractors/AuctionHouseInteractor";
 
 
 function App() {
     const {state} = useEth();
+
+    useEffect(() => {
+        if(state && state.tokenGenerator) {
+            tokenGeneratorInteractor.initialize(state);
+        }
+        if(state && state.auctionHouse) {
+            auctionHouseInteractor.initialize(state);
+        }
+    }, [state]);
+
     useEffect(() => {
         const theme = Theme;
         document.documentElement.style.setProperty("--primary-light", theme.palette.primary.light);
@@ -29,38 +41,18 @@ function App() {
         document.documentElement.style.setProperty('--spacing-4', theme.spacing(4));
     }, []);
 
-    useEffect(() => {
-        if (window.ethereum) {
-            const handleConnect = () => {
-                console.log("Connected");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 100);
-            };
-            const handleDisconnect = () => {
-                console.log("Disconnected");
-                setTimeout(() => {
-                    window.location.reload();
-                }, 100);
-            };
+    const accountConnected = () => {
+        return state.accounts && state.accounts.length > 0;
+    }
 
-            // Add event listeners
-            window.ethereum.on('connect', handleConnect);
-            window.ethereum.on('disconnect', handleDisconnect);
-
-            // Cleanup function to remove event listeners
-            return () => {
-                window.ethereum.removeListener('connect', handleConnect);
-                window.ethereum.removeListener('disconnect', handleDisconnect);
-            };
-        }
-    }, []);
-
+    const initalizationReady = () => {
+        return tokenGeneratorInteractor.ready() && auctionHouseInteractor.ready();
+    }
 
     return (
         <ThemeProvider theme={Theme}>
               <div id="App">
-                    {state.accounts && state.accounts.length > 0 ? (
+                    { accountConnected() && initalizationReady() ? (
                         <HashRouter>
                             <NavBar/>
                             <div className="centered-page">
@@ -69,7 +61,6 @@ function App() {
                                     <Route path="/relic/:id" element={<Relic/>} />
                                     <Route path="/auction" element={<BrowseAuctions/>} />
                                     <Route path="/auction/:id" element={<ViewAuction/>} />
-
                                 </Routes>
                             </div>
                         </HashRouter>
