@@ -1,6 +1,7 @@
 import {tokenGeneratorInteractor} from "../blockchainInteractors/TokenGeneratorInteractor";
 import {RelicModel} from "../models/RelicModel";
 import {auctionHouseInteractor} from "../blockchainInteractors/AuctionHouseInteractor";
+import {imageDataSource} from "../ipfs/ImageDataSource";
 
 class RelicService {
     #eth = null;
@@ -11,7 +12,10 @@ class RelicService {
         this.auctionHouse = eth.auctionHouse;
     }
 
-    async addRelic(model) {
+    async addRelic(model, image) {
+        if(image != null) {
+            model.imageSource = await imageDataSource.uploadImage(image);
+        }
         await tokenGeneratorInteractor.createToken(model);
     }
 
@@ -21,10 +25,9 @@ class RelicService {
 
     async getRelic(tokenId) {
         try {
-            const name = await tokenGeneratorInteractor.getTokenName(tokenId);
-            const description = await tokenGeneratorInteractor.getTokenDescription(tokenId);
-            const isAuctioned = await auctionHouseInteractor.isTokenAuctioned(tokenId);
-            return new RelicModel(tokenId, name, description, isAuctioned);
+            const token = await tokenGeneratorInteractor.getToken(tokenId);
+            token.isAuctioned = await auctionHouseInteractor.isTokenAuctioned(tokenId);
+            return token;
         }
         catch (err) {
             console.log(`Error while fetching token with id=${tokenId}: ${err}`);
