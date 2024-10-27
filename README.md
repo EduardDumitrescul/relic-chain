@@ -1,39 +1,31 @@
-# React Truffle Box
+# Partea 1: Implementarea smart-contractelor
 
-This box comes with everything you need to start using Truffle to write, compile, test, and deploy smart contracts, and interact with them from a React app.
+## Cerințe obligatorii (maxim 3 puncte) – minim pentru promovare
+- Utilizarea tipurilor de date specifice Solidity (mappings, address).
+- Înregistrarea de events.
+- Utilizarea de modifiers.
+- Exemple pentru toate tipurile de funcții (external, pure, view etc.).
+- Exemple de transfer de ETH.
+- Ilustrarea interacțiunii dintre smart contracte.
+- Deploy pe o rețea locală sau pe o rețea de test Ethereum.
 
-## Installation
+## Cerințe opționale (maxim 2 puncte) – se pot alege câteva elemente din lista
+- Utilizare librării.
+- Implementarea de teste (cu tool-uri la alegerea echipelor).
+- Utilizarea unor elemente avansate de OOP (interfețe, moștenire) pentru implementarea unor pattern-uri utilizate frecvent (exemple Proxy Pattern, Withdrawal Pattern, Library Pattern etc.).
+- Implementarea de standarde ERC.
+- Utilizarea de Oracles.
+- Utilizarea altor platforme de stocare descentralizată (exemplu IPFS).
 
-First ensure you are in an empty directory.
+# Partea 2: Interacțiunea cu blockchain printr-o aplicație web3
 
-Run the `unbox` command using 1 of 2 ways.
+Atât framework-ul de front-end cât și librăriile web3 utilizate sunt la alegerea echipelor.
 
-```sh
-# Install Truffle globally and run `truffle unbox`
-$ npm install -g truffle
-$ truffle unbox react
-```
+## Cerințe obligatorii (maxim 1.5 punct) – minim pentru promovare
+- Utilizarea unei librării web3 (exemple web3 sau ethersjs) și conectarea cu un Web3 Provider pentru accesarea unor informații generale despre conturi (adresa, balance).
+- Inițierea tranzacțiilor de transfer sau de apel de funcții, utilizând clase din librăriile web3.
 
-```sh
-# Alternatively, run `truffle unbox` via npx
-$ npx truffle unbox react
-```
-
-Start the react dev server.
-
-```sh
-$ cd client
-$ npm start
-```
-
-From there, follow the instructions on the hosted React app. It will walk you through using Truffle and Ganache to deploy the `SimpleStorage` contract, making calls to it, and sending transactions to change the contract's state.
-
-## FAQ
-
-- __How do I use this with Ganache (or any other network)?__
-
-  The Truffle project is set to deploy to Ganache by default. If you'd like to change this, it's as easy as modifying the Truffle config file! Check out [our documentation on adding network configurations](https://trufflesuite.com/docs/truffle/reference/configuration/#networks). From there, you can run `truffle migrate` pointed to another network, restart the React dev server, and see the change take place.
-
-- __Where can I find more resources?__
-
-  This Box is a sweet combo of [Truffle](https://trufflesuite.com) and [Webpack](https://webpack.js.org). Either one would be a great place to start!
+## Cerințe opționale (maxim 2,5 puncte) – se pot alege câteva elemente din lista
+- Tratare events (Observer Pattern).
+- Analiza gas-cost (estimare cost și fixare limită de cost).
+- Control al stării tranzacțiilor (tratare excepții).
