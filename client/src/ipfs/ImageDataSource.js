@@ -10,7 +10,7 @@ export const imageDataSource = {
     async uploadImage(image) {
         try {
             const added = await client.add(image);
-            const url = `https://ipfs.io/ipfs/${added.path}`; // Updated to use IPFS.io gateway
+            const url = `http://localhost:8080//ipfs/${added.path}`; // Updated to use IPFS.io gateway
             return url;
         } catch (error) {
             console.error("Error uploading image: ", error);
